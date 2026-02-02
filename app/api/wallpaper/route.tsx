@@ -53,14 +53,15 @@ export async function GET(request: NextRequest) {
   const gridWidth = columns * cellSize - spacing;
   const gridHeight = rows * cellSize - spacing;
 
-  // Calculate text spacing - font is 4x larger
-  const textFontSize = Math.max(24, Math.floor(width / 30)) * 4;
-  const topTextSpace = textFontSize + 40; // Space for "X days remaining" above grid
+  // Font sizes
+  const daysRemainingFontSize = Math.max(32, Math.floor(width / 25)); // Slightly larger for "X days remaining"
+  const customTextFontSize = Math.max(48, Math.floor(width / 15)); // Larger for custom text
 
-  // Center horizontally, push grid down to avoid clock overlay
+  // Layout positioning
   const offsetX = (width - gridWidth) / 2;
-  const topPadding = height * 0.28; // Start grid at ~28% from top to clear the clock
-  const offsetY = topPadding + topTextSpace;
+  const topPadding = height * 0.14; // "X days remaining" starts at 14% from top (below clock)
+  const gridStartY = height * 0.18; // Grid starts at 18% from top
+  const offsetY = gridStartY;
 
   // Generate circles
   const circles = [];
@@ -105,14 +106,14 @@ export async function GET(request: NextRequest) {
         <div
           style={{
             position: 'absolute',
-            top: offsetY - topTextSpace + 20,
+            top: topPadding,
             left: 0,
             right: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             color: textColor,
-            fontSize: textFontSize,
+            fontSize: daysRemainingFontSize,
             fontFamily: font,
             fontWeight: 300,
             letterSpacing: '0.05em',
@@ -129,17 +130,17 @@ export async function GET(request: NextRequest) {
           <div
             style={{
               position: 'absolute',
-              bottom: height * 0.12, // Position near bottom, above the widgets
+              bottom: height * 0.08, // Position near bottom, above the widgets
               left: 0,
               right: 0,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               color: textColor,
-              fontSize: textFontSize,
+              fontSize: customTextFontSize,
               fontFamily: font,
-              fontWeight: 300,
-              letterSpacing: '0.05em',
+              fontWeight: 500,
+              letterSpacing: '0.02em',
             }}
           >
             {customText}
