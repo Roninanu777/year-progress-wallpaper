@@ -33,12 +33,13 @@ export async function GET(request: NextRequest) {
   const showCustomText = searchParams.get('showCustomText') === 'true';
   const customText = searchParams.get('customText') || '';
   const font = searchParams.get('font') || 'sans-serif';
+  const highlightColor = `#${searchParams.get('highlightColor') || 'FFD700'}`; // Yellow for current day
 
   // Calculate day of year
   const now = new Date();
-  const totalDays = getDaysInYear(now.getFullYear());
+  const year = now.getFullYear();
+  const totalDays = getDaysInYear(year);
   const dayOfYear = getDayOfYear(now);
-  const daysRemaining = totalDays - dayOfYear;
 
   // Calculate grid layout
   const diameter = radius * 2;
@@ -53,14 +54,16 @@ export async function GET(request: NextRequest) {
   const gridWidth = columns * cellSize - spacing;
   const gridHeight = rows * cellSize - spacing;
 
-  // Font sizes
-  const daysRemainingFontSize = Math.max(24, Math.floor(width / 30)); // Original size
-  const customTextFontSize = Math.max(24, Math.floor(width / 30)) * 2; // 2x for custom text
+  // Font sizes (matching LifeGrid style)
+  const titleFontSize = Math.max(36, Math.floor(width / 18)); // "Day X of 365" - large bold
+  const subtitleFontSize = Math.max(18, Math.floor(width / 45)); // "2026 Progress" - smaller
+  const customTextFontSize = Math.max(28, Math.floor(width / 28)); // Quote text - medium italic
 
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
-  const topPadding = height * 0.14; // "X days remaining" starts at 14% from top (below clock)
-  const gridStartY = height * 0.18; // Grid starts at 18% from top
+  const titleY = height * 0.12; // Title position
+  const subtitleY = titleY + titleFontSize + 10; // Subtitle just below title
+  const gridStartY = subtitleY + subtitleFontSize + 30; // Grid starts below subtitle
   const offsetY = gridStartY;
 
   // Generate circles
@@ -70,7 +73,21 @@ export async function GET(request: NextRequest) {
     const row = Math.floor(i / columns);
     const x = offsetX + col * cellSize + radius;
     const y = offsetY + row * cellSize + radius;
-    const isFilled = i < dayOfYear;
+    const dayNumber = i + 1; // Days are 1-indexed
+    const isPassed = dayNumber < dayOfYear;
+    const isCurrentDay = dayNumber === dayOfYear;
+    const isFuture = dayNumber > dayOfYear;
+
+    let dotColor = emptyColor;
+    let dotStyle: 'filled' | 'outline' = 'outline';
+
+    if (isPassed) {
+      dotColor = filledColor;
+      dotStyle = 'filled';
+    } else if (isCurrentDay) {
+      dotColor = highlightColor;
+      dotStyle = 'filled';
+    }
 
     circles.push(
       <div
@@ -82,8 +99,8 @@ export async function GET(request: NextRequest) {
           width: diameter,
           height: diameter,
           borderRadius: '50%',
-          backgroundColor: isFilled ? filledColor : 'transparent',
-          border: isFilled ? 'none' : `2px solid ${emptyColor}`,
+          backgroundColor: dotStyle === 'filled' ? dotColor : 'transparent',
+          border: dotStyle === 'outline' ? `2px solid ${emptyColor}` : 'none',
           boxSizing: 'border-box',
         }}
       />
@@ -102,30 +119,50 @@ export async function GET(request: NextRequest) {
           position: 'relative',
         }}
       >
-        {/* Days remaining text - always shown above grid */}
+        {/* Title - "Day X of 365" */}
         <div
           style={{
             position: 'absolute',
-            top: topPadding,
+            top: titleY,
             left: 0,
             right: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             color: textColor,
-            fontSize: daysRemainingFontSize,
-            fontFamily: font,
-            fontWeight: 300,
-            letterSpacing: '0.05em',
+            fontSize: titleFontSize,
+            fontFamily: 'sans-serif',
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
           }}
         >
-          {daysRemaining} days remaining
+          Day {dayOfYear} of {totalDays}
+        </div>
+
+        {/* Subtitle - "2026 Progress" */}
+        <div
+          style={{
+            position: 'absolute',
+            top: subtitleY,
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#888888',
+            fontSize: subtitleFontSize,
+            fontFamily: 'sans-serif',
+            fontWeight: 400,
+            letterSpacing: '0.02em',
+          }}
+        >
+          {year} Progress
         </div>
 
         {/* Circles grid */}
         {circles}
 
-        {/* Custom text - shown near bottom (above flashlight/camera widgets) */}
+        {/* Custom text/quote - shown near bottom in italic serif style */}
         {showCustomText && customText && (
           <div
             style={{
@@ -138,9 +175,10 @@ export async function GET(request: NextRequest) {
               alignItems: 'center',
               color: textColor,
               fontSize: customTextFontSize,
-              fontFamily: font,
-              fontWeight: 500,
-              letterSpacing: '0.02em',
+              fontFamily: 'serif',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              letterSpacing: '0.01em',
             }}
           >
             {customText}
