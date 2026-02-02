@@ -62,11 +62,13 @@ export async function GET(request: NextRequest) {
   const font = searchParams.get('font') || 'Lora';
   const highlightColor = `#${searchParams.get('highlightColor') || 'FFD700'}`;
 
-  // Calculate day of year
+  // Calculate day of year in IST (UTC+5:30)
   const now = new Date();
-  const year = now.getFullYear();
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+  const istDate = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60 * 1000);
+  const year = istDate.getFullYear();
   const totalDays = getDaysInYear(year);
-  const dayOfYear = getDayOfYear(now);
+  const dayOfYear = getDayOfYear(istDate);
 
   // Calculate grid layout
   const diameter = radius * 2;
