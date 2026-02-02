@@ -1,65 +1,146 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useMemo } from 'react';
+import Preview from '@/components/Preview';
+import Controls from '@/components/Controls';
+import ShortcutInstructions from '@/components/ShortcutInstructions';
+import { DEFAULT_SETTINGS, DEVICE_PRESETS, DevicePresetKey, FontKey } from '@/lib/constants';
+import { generateApiUrl, getDayOfYear, getDaysRemaining, getYearProgress } from '@/lib/utils';
 
 export default function Home() {
+  const [device, setDevice] = useState<DevicePresetKey>(DEFAULT_SETTINGS.device);
+  const [bgColor, setBgColor] = useState(DEFAULT_SETTINGS.bgColor);
+  const [filledColor, setFilledColor] = useState(DEFAULT_SETTINGS.filledColor);
+  const [emptyColor, setEmptyColor] = useState(DEFAULT_SETTINGS.emptyColor);
+  const [radius, setRadius] = useState(DEFAULT_SETTINGS.radius);
+  const [spacing, setSpacing] = useState(DEFAULT_SETTINGS.spacing);
+  const [textColor, setTextColor] = useState(DEFAULT_SETTINGS.textColor);
+  const [showCustomText, setShowCustomText] = useState(DEFAULT_SETTINGS.showCustomText);
+  const [customText, setCustomText] = useState(DEFAULT_SETTINGS.customText);
+  const [font, setFont] = useState<FontKey>(DEFAULT_SETTINGS.font);
+
+  const deviceConfig = DEVICE_PRESETS[device];
+
+  const apiUrl = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    return generateApiUrl(window.location.origin, {
+      width: deviceConfig.width,
+      height: deviceConfig.height,
+      bgColor,
+      filledColor,
+      emptyColor,
+      radius,
+      spacing,
+      textColor,
+      showCustomText,
+      customText,
+      font,
+    });
+  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, showCustomText, customText, font, deviceConfig]);
+
+  const dayOfYear = getDayOfYear();
+  const daysRemaining = getDaysRemaining();
+  const progress = getYearProgress();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen">
+      {/* Header */}
+      <header className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">
+                Year Progress Wallpaper
+              </h1>
+              <p className="text-sm text-gray-400 mt-1 hidden sm:block">
+                Visualize your year with a customizable circle grid
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl sm:text-3xl font-bold text-white">
+                {progress.toFixed(1)}%
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400">
+                Day {dayOfYear} • {daysRemaining} remaining
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </header>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Preview Column */}
+          <div className="order-1 lg:order-1">
+            <div className="sticky top-24">
+              <h2 className="text-lg font-semibold text-white mb-6 text-center lg:text-left">
+                Live Preview
+              </h2>
+              <Preview
+                device={device}
+                bgColor={bgColor}
+                filledColor={filledColor}
+                emptyColor={emptyColor}
+                radius={radius}
+                spacing={spacing}
+                textColor={textColor}
+                showCustomText={showCustomText}
+                customText={customText}
+                font={font}
+              />
+            </div>
+          </div>
+
+          {/* Controls Column */}
+          <div className="order-2 lg:order-2">
+            <h2 className="text-lg font-semibold text-white mb-6">
+              Customize Your Wallpaper
+            </h2>
+            <Controls
+              device={device}
+              setDevice={setDevice}
+              bgColor={bgColor}
+              setBgColor={setBgColor}
+              filledColor={filledColor}
+              setFilledColor={setFilledColor}
+              emptyColor={emptyColor}
+              setEmptyColor={setEmptyColor}
+              radius={radius}
+              setRadius={setRadius}
+              spacing={spacing}
+              setSpacing={setSpacing}
+              textColor={textColor}
+              setTextColor={setTextColor}
+              showCustomText={showCustomText}
+              setShowCustomText={setShowCustomText}
+              customText={customText}
+              setCustomText={setCustomText}
+              font={font}
+              setFont={setFont}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+            {/* iOS Shortcut Instructions */}
+            <div className="mt-8">
+              <ShortcutInstructions apiUrl={apiUrl} />
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-800 mt-16">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <div className="text-center text-sm text-gray-500">
+            <p>
+              Generate beautiful year-progress wallpapers for your iPhone.
+              <br className="sm:hidden" />
+              <span className="hidden sm:inline"> • </span>
+              Updates automatically when used with iOS Shortcuts.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }
