@@ -172,7 +172,7 @@ export async function GET(request: NextRequest) {
         {/* Circles grid */}
         {circles}
 
-        {/* Custom text/quote - shown near bottom in italic serif style */}
+        {/* Custom text/quote - shown near bottom, always italic */}
         {showCustomText && customText && (
           <div
             style={{
@@ -185,7 +185,7 @@ export async function GET(request: NextRequest) {
               alignItems: 'center',
               color: textColor,
               fontSize: customTextFontSize,
-              fontFamily: 'serif',
+              fontFamily: font,
               fontWeight: 400,
               fontStyle: 'italic',
               letterSpacing: '0.01em',
