@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
   const gridHeight = rows * cellSize - spacing;
 
   // Font sizes
-  const daysRemainingFontSize = Math.max(32, Math.floor(width / 25)); // Slightly larger for "X days remaining"
-  const customTextFontSize = Math.max(48, Math.floor(width / 15)); // Larger for custom text
+  const daysRemainingFontSize = Math.max(24, Math.floor(width / 30)); // Original size
+  const customTextFontSize = Math.max(24, Math.floor(width / 30)) * 4; // 4x for custom text
 
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
