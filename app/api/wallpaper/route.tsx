@@ -53,15 +53,14 @@ export async function GET(request: NextRequest) {
   const gridWidth = columns * cellSize - spacing;
   const gridHeight = rows * cellSize - spacing;
 
-  // Calculate text spacing
-  const textFontSize = Math.max(24, Math.floor(width / 30));
-  const topTextSpace = textFontSize + 60; // Space for "X days remaining" above grid
-  const bottomTextSpace = showCustomText ? textFontSize + 60 : 0; // Space for custom text below grid
+  // Calculate text spacing - font is 4x larger
+  const textFontSize = Math.max(24, Math.floor(width / 30)) * 4;
+  const topTextSpace = textFontSize + 40; // Space for "X days remaining" above grid
 
-  // Center horizontally, position vertically with space for text above and optionally below
+  // Center horizontally, push grid down to avoid clock overlay
   const offsetX = (width - gridWidth) / 2;
-  const totalContentHeight = gridHeight + topTextSpace + bottomTextSpace;
-  const offsetY = (height - totalContentHeight) / 2 + topTextSpace;
+  const topPadding = height * 0.28; // Start grid at ~28% from top to clear the clock
+  const offsetY = topPadding + topTextSpace;
 
   // Generate circles
   const circles = [];
@@ -125,12 +124,12 @@ export async function GET(request: NextRequest) {
         {/* Circles grid */}
         {circles}
 
-        {/* Custom text - shown below grid when enabled */}
+        {/* Custom text - shown near bottom (above flashlight/camera widgets) */}
         {showCustomText && customText && (
           <div
             style={{
               position: 'absolute',
-              top: offsetY + gridHeight + 20,
+              bottom: height * 0.12, // Position near bottom, above the widgets
               left: 0,
               right: 0,
               display: 'flex',
