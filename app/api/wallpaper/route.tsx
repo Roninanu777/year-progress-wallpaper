@@ -60,7 +60,9 @@ export async function GET(request: NextRequest) {
   const customTextFontSize = Math.max(28, Math.floor(width / 28)); // Quote text - medium italic
 
   // Calculate total content height (title + subtitle + grid)
-  const titleBlockHeight = titleFontSize + 10 + subtitleFontSize + 30; // title + gap + subtitle + gap before grid
+  const titleToSubtitleGap = 20; // Gap between "Day X of Y" and "2026 Progress"
+  const subtitleToGridGap = 30; // Gap between subtitle and grid
+  const titleBlockHeight = titleFontSize + titleToSubtitleGap + subtitleFontSize + subtitleToGridGap;
   const totalContentHeight = titleBlockHeight + gridHeight;
 
   // Center everything vertically, but push down a bit to avoid clock (add 5% offset)
@@ -70,8 +72,8 @@ export async function GET(request: NextRequest) {
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
   const titleY = contentStartY;
-  const subtitleY = titleY + titleFontSize + 10;
-  const gridStartY = subtitleY + subtitleFontSize + 30;
+  const subtitleY = titleY + titleFontSize + titleToSubtitleGap;
+  const gridStartY = subtitleY + subtitleFontSize + subtitleToGridGap;
   const offsetY = gridStartY;
 
   // Generate circles

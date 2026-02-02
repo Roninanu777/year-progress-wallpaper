@@ -12,6 +12,11 @@ export const DEVICE_PRESETS = {
 export type DevicePresetKey = keyof typeof DEVICE_PRESETS;
 
 export const FONT_OPTIONS = {
+  'Inter': 'Inter',
+  'Playfair Display': 'Playfair',
+  'Roboto Mono': 'Roboto Mono',
+  'Lora': 'Lora',
+  'Oswald': 'Oswald',
   'sans-serif': 'Sans Serif',
   'serif': 'Serif',
   'monospace': 'Monospace',
@@ -29,7 +34,7 @@ export const DEFAULT_SETTINGS = {
   textColor: '#FFFFFF',
   showCustomText: false,
   customText: '',
-  font: 'sans-serif' as FontKey,
+  font: 'Lora' as FontKey,
 };
 
 export const PRESET_THEMES = {

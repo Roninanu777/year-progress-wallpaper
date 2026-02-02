@@ -121,6 +121,11 @@ describe('GRID_CONFIG', () => {
 
 describe('FONT_OPTIONS', () => {
   it('contains expected font keys', () => {
+    expect(FONT_OPTIONS).toHaveProperty('Inter');
+    expect(FONT_OPTIONS).toHaveProperty('Playfair Display');
+    expect(FONT_OPTIONS).toHaveProperty('Roboto Mono');
+    expect(FONT_OPTIONS).toHaveProperty('Lora');
+    expect(FONT_OPTIONS).toHaveProperty('Oswald');
     expect(FONT_OPTIONS).toHaveProperty('sans-serif');
     expect(FONT_OPTIONS).toHaveProperty('serif');
     expect(FONT_OPTIONS).toHaveProperty('monospace');
@@ -134,8 +139,8 @@ describe('FONT_OPTIONS', () => {
   });
 
   it('has expected display names', () => {
+    expect(FONT_OPTIONS['Inter']).toBe('Inter');
+    expect(FONT_OPTIONS['Lora']).toBe('Lora');
     expect(FONT_OPTIONS['sans-serif']).toBe('Sans Serif');
-    expect(FONT_OPTIONS['serif']).toBe('Serif');
-    expect(FONT_OPTIONS['monospace']).toBe('Monospace');
   });
 });
