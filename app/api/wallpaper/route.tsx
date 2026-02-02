@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
 
   // Font sizes
   const daysRemainingFontSize = Math.max(24, Math.floor(width / 30)); // Original size
-  const customTextFontSize = Math.max(24, Math.floor(width / 30)) * 4; // 4x for custom text
+  const customTextFontSize = Math.max(24, Math.floor(width / 30)) * 2; // 2x for custom text
 
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
