@@ -3,6 +3,33 @@ import { NextRequest } from 'next/server';
 
 export const runtime = 'edge';
 
+// Google Fonts URLs for different fonts (using wght for weight variations)
+const FONT_URLS: Record<string, { regular: string; italic?: string; bold?: string }> = {
+  'Inter': {
+    regular: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
+    bold: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2',
+  },
+  'Playfair Display': {
+    regular: 'https://fonts.gstatic.com/s/playfairdisplay/v36/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtM.woff2',
+    italic: 'https://fonts.gstatic.com/s/playfairdisplay/v36/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTbtbK-F2rA.woff2',
+  },
+  'Roboto Mono': {
+    regular: 'https://fonts.gstatic.com/s/robotomono/v23/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_ROW4.woff2',
+  },
+  'Lora': {
+    regular: 'https://fonts.gstatic.com/s/lora/v32/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkqs.woff2',
+    italic: 'https://fonts.gstatic.com/s/lora/v32/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFkqh8ndeZzZ0.woff2',
+  },
+  'Oswald': {
+    regular: 'https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUZiYA.woff2',
+  },
+};
+
+async function loadFont(url: string): Promise<ArrayBuffer> {
+  const response = await fetch(url);
+  return response.arrayBuffer();
+}
+
 function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
@@ -32,8 +59,8 @@ export async function GET(request: NextRequest) {
   const textColor = `#${searchParams.get('textColor') || 'FFFFFF'}`;
   const showCustomText = searchParams.get('showCustomText') === 'true';
   const customText = searchParams.get('customText') || '';
-  const font = searchParams.get('font') || 'sans-serif';
-  const highlightColor = `#${searchParams.get('highlightColor') || 'FFD700'}`; // Yellow for current day
+  const font = searchParams.get('font') || 'Lora';
+  const highlightColor = `#${searchParams.get('highlightColor') || 'FFD700'}`;
 
   // Calculate day of year
   const now = new Date();
@@ -55,13 +82,13 @@ export async function GET(request: NextRequest) {
   const gridHeight = rows * cellSize - spacing;
 
   // Font sizes (matching LifeGrid style)
-  const titleFontSize = Math.max(36, Math.floor(width / 18)); // "Day X of 365" - large bold
-  const subtitleFontSize = Math.max(18, Math.floor(width / 45)); // "2026 Progress" - smaller
-  const customTextFontSize = Math.max(28, Math.floor(width / 28)); // Quote text - medium italic
+  const titleFontSize = Math.max(36, Math.floor(width / 18));
+  const subtitleFontSize = Math.max(18, Math.floor(width / 45));
+  const customTextFontSize = Math.max(28, Math.floor(width / 28));
 
   // Calculate total content height (title + subtitle + grid)
-  const titleToSubtitleGap = 20; // Gap between "Day X of Y" and "2026 Progress"
-  const subtitleToGridGap = 30; // Gap between subtitle and grid
+  const titleToSubtitleGap = 20;
+  const subtitleToGridGap = 30;
   const titleBlockHeight = titleFontSize + titleToSubtitleGap + subtitleFontSize + subtitleToGridGap;
   const totalContentHeight = titleBlockHeight + gridHeight;
 
@@ -83,10 +110,9 @@ export async function GET(request: NextRequest) {
     const row = Math.floor(i / columns);
     const x = offsetX + col * cellSize + radius;
     const y = offsetY + row * cellSize + radius;
-    const dayNumber = i + 1; // Days are 1-indexed
+    const dayNumber = i + 1;
     const isPassed = dayNumber < dayOfYear;
     const isCurrentDay = dayNumber === dayOfYear;
-    const isFuture = dayNumber > dayOfYear;
 
     let dotColor = emptyColor;
     let dotStyle: 'filled' | 'outline' = 'outline';
@@ -117,6 +143,33 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // Load fonts
+  const fonts: { name: string; data: ArrayBuffer; weight: number; style: 'normal' | 'italic' }[] = [];
+
+  // Always load Inter for title (bold)
+  try {
+    const interBold = await loadFont(FONT_URLS['Inter'].bold!);
+    fonts.push({ name: 'Inter', data: interBold, weight: 700, style: 'normal' });
+  } catch {
+    // Fallback - will use system font
+  }
+
+  // Load selected font for custom text (italic version if available)
+  if (font && FONT_URLS[font]) {
+    try {
+      const fontConfig = FONT_URLS[font];
+      if (fontConfig.italic) {
+        const italicFont = await loadFont(fontConfig.italic);
+        fonts.push({ name: font, data: italicFont, weight: 400, style: 'italic' });
+      } else if (fontConfig.regular) {
+        const regularFont = await loadFont(fontConfig.regular);
+        fonts.push({ name: font, data: regularFont, weight: 400, style: 'normal' });
+      }
+    } catch {
+      // Fallback - will use system font
+    }
+  }
+
   return new ImageResponse(
     (
       <div
@@ -141,7 +194,7 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             color: textColor,
             fontSize: titleFontSize,
-            fontFamily: 'sans-serif',
+            fontFamily: 'Inter',
             fontWeight: 700,
             letterSpacing: '-0.02em',
           }}
@@ -161,7 +214,7 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             color: '#888888',
             fontSize: subtitleFontSize,
-            fontFamily: 'sans-serif',
+            fontFamily: 'Inter',
             fontWeight: 400,
             letterSpacing: '0.02em',
           }}
@@ -177,7 +230,7 @@ export async function GET(request: NextRequest) {
           <div
             style={{
               position: 'absolute',
-              bottom: height * 0.08, // Position near bottom, above the widgets
+              bottom: height * 0.08,
               left: 0,
               right: 0,
               display: 'flex',
@@ -199,6 +252,7 @@ export async function GET(request: NextRequest) {
     {
       width,
       height,
+      fonts: fonts.length > 0 ? fonts : undefined,
     }
   );
 }
