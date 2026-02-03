@@ -204,7 +204,7 @@ export async function GET(request: NextRequest) {
           Day {dayOfYear} of {totalDays}
         </div>
 
-        {/* Subtitle - "2026 Progress" */}
+        {/* Subtitle - "2026 Progress • X%" */}
         <div
           style={{
             position: 'absolute',
@@ -221,7 +221,7 @@ export async function GET(request: NextRequest) {
             letterSpacing: '0.02em',
           }}
         >
-          {year} Progress
+          {year} Progress • {((dayOfYear / totalDays) * 100).toFixed(1)}%
         </div>
 
         {/* Circles grid */}
