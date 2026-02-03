@@ -145,32 +145,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Load fonts
-  const fonts: { name: string; data: ArrayBuffer; weight: number; style: 'normal' | 'italic' }[] = [];
-
-  // Always load Inter for title (bold)
-  try {
-    const interBold = await loadFont(FONT_URLS['Inter'].bold!);
-    fonts.push({ name: 'Inter', data: interBold, weight: 700, style: 'normal' });
-  } catch {
-    // Fallback - will use system font
-  }
-
-  // Load selected font for custom text (italic version if available)
-  if (font && FONT_URLS[font]) {
-    try {
-      const fontConfig = FONT_URLS[font];
-      if (fontConfig.italic) {
-        const italicFont = await loadFont(fontConfig.italic);
-        fonts.push({ name: font, data: italicFont, weight: 400, style: 'italic' });
-      } else if (fontConfig.regular) {
-        const regularFont = await loadFont(fontConfig.regular);
-        fonts.push({ name: font, data: regularFont, weight: 400, style: 'normal' });
-      }
-    } catch {
-      // Fallback - will use system font
-    }
-  }
+  // Determine which font family to use for custom text
+  const customFontFamily = FONT_URLS[font] ? font : 'serif';
 
   return new ImageResponse(
     (
@@ -196,7 +172,7 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             color: textColor,
             fontSize: titleFontSize,
-            fontFamily: 'Inter',
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 700,
             letterSpacing: '-0.02em',
           }}
@@ -216,7 +192,7 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             color: '#888888',
             fontSize: subtitleFontSize,
-            fontFamily: 'Inter',
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 400,
             letterSpacing: '0.02em',
           }}
@@ -240,7 +216,7 @@ export async function GET(request: NextRequest) {
               alignItems: 'center',
               color: textColor,
               fontSize: customTextFontSize,
-              fontFamily: font,
+              fontFamily: customFontFamily,
               fontWeight: 400,
               fontStyle: 'italic',
               letterSpacing: '0.01em',
@@ -254,7 +230,6 @@ export async function GET(request: NextRequest) {
     {
       width,
       height,
-      fonts: fonts.length > 0 ? fonts : undefined,
     }
   );
 }
