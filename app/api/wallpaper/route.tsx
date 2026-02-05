@@ -84,16 +84,13 @@ export async function GET(request: NextRequest) {
   const gridHeight = rows * cellSize - spacing;
 
   // Font sizes (matching LifeGrid style)
-  const titleFontSize = Math.max(36, Math.floor(width / 18));
   const subtitleFontSize = Math.max(28, Math.floor(width / 32));
   const customTextFontSize = Math.max(42, Math.floor(width / 20));
 
-  // Calculate total content height (title + grid + subtitle below)
-  const titleToGridGap = 30;
+  // Calculate total content height (grid + subtitle below)
   const gridToSubtitleGap = 25;
-  const titleBlockHeight = titleFontSize + titleToGridGap;
   const subtitleBlockHeight = gridToSubtitleGap + subtitleFontSize;
-  const totalContentHeight = titleBlockHeight + gridHeight + subtitleBlockHeight;
+  const totalContentHeight = gridHeight + subtitleBlockHeight;
 
   // Center everything vertically, but push down a bit to avoid clock (add 5% offset)
   const verticalOffset = height * 0.05;
@@ -101,8 +98,7 @@ export async function GET(request: NextRequest) {
 
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
-  const titleY = contentStartY;
-  const gridStartY = titleY + titleFontSize + titleToGridGap;
+  const gridStartY = contentStartY;
   const offsetY = gridStartY;
   const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
 
@@ -161,27 +157,7 @@ export async function GET(request: NextRequest) {
           position: 'relative',
         }}
       >
-        {/* Title - "Day X of 365" */}
-        <div
-          style={{
-            position: 'absolute',
-            top: titleY,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: textColor,
-            fontSize: titleFontSize,
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontWeight: 700,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Day {dayOfYear} of {totalDays}
-        </div>
-
-        {/* Subtitle - "2026 Progress • X%" */}
+        {/* Subtitle - "X days left" */}
         <div
           style={{
             position: 'absolute',
@@ -198,7 +174,7 @@ export async function GET(request: NextRequest) {
             letterSpacing: '0.02em',
           }}
         >
-          {year} Progress • {((dayOfYear / totalDays) * 100).toFixed(1)}%
+          {totalDays - dayOfYear} days left
         </div>
 
         {/* Circles grid */}

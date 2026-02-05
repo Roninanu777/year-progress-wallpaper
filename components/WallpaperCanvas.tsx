@@ -63,16 +63,13 @@ export default function WallpaperCanvas({
     const gridHeight = rows * cellSize - spacing;
 
     // Font sizes
-    const titleFontSize = Math.max(36, Math.floor(width / 18));
     const subtitleFontSize = Math.max(28, Math.floor(width / 32));
     const customTextFontSize = Math.max(42, Math.floor(width / 20));
 
-    // Calculate total content height (title + grid + subtitle below)
-    const titleToGridGap = 30;
+    // Calculate total content height (grid + subtitle below)
     const gridToSubtitleGap = 25;
-    const titleBlockHeight = titleFontSize + titleToGridGap;
     const subtitleBlockHeight = gridToSubtitleGap + subtitleFontSize;
-    const totalContentHeight = titleBlockHeight + gridHeight + subtitleBlockHeight;
+    const totalContentHeight = gridHeight + subtitleBlockHeight;
 
     // Center everything vertically, but push down a bit to avoid clock (add 5% offset)
     const verticalOffset = height * 0.05;
@@ -80,28 +77,20 @@ export default function WallpaperCanvas({
 
     // Layout positioning
     const offsetX = (width - gridWidth) / 2;
-    const titleY = contentStartY;
-    const gridStartY = titleY + titleFontSize + titleToGridGap;
+    const gridStartY = contentStartY;
     const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
 
     // Clear and fill background
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
 
-    // Draw title
-    ctx.fillStyle = textColor;
-    ctx.font = `700 ${titleFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(`Day ${dayOfYear} of ${totalDays}`, width / 2, titleY);
-
     // Draw subtitle (below grid)
+    const daysLeft = totalDays - dayOfYear;
     ctx.fillStyle = '#888888';
     ctx.font = `400 ${subtitleFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    const progress = ((dayOfYear / totalDays) * 100).toFixed(1);
-    ctx.fillText(`${year} Progress • ${progress}%`, width / 2, subtitleY);
+    ctx.fillText(`${daysLeft} days left`, width / 2, subtitleY);
 
     // Draw circles
     for (let i = 0; i < totalDays; i++) {
