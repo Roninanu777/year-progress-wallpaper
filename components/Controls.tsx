@@ -134,7 +134,7 @@ export default function Controls({
       {/* Theme Presets */}
       <section>
         <h3 className="text-sm font-medium uppercase tracking-wider text-zinc-400 mb-4">Theme Presets</h3>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {Object.entries(PRESET_THEMES).map(([key, theme]) => (
             <button
               key={key}
