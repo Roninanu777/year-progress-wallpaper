@@ -174,7 +174,8 @@ export async function GET(request: NextRequest) {
           }}
         >
           <span style={{ color: '#FFA500' }}>{totalDays - dayOfYear}d left</span>
-          <span style={{ color: '#FFFFFF' }}>  •  {((dayOfYear / totalDays) * 100).toFixed(1)}%</span>
+          <span style={{ color: '#FFFFFF', marginLeft: 16, marginRight: 16 }}>•</span>
+          <span style={{ color: '#FFFFFF' }}>{((dayOfYear / totalDays) * 100).toFixed(1)}%</span>
         </div>
 
         {/* Circles grid */}
