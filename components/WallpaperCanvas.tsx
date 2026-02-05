@@ -162,6 +162,8 @@ export default function WallpaperCanvas({
       const totalDays = getDaysInMonth(istDate);
       const dayOfMonth = getDayOfMonth(istDate);
       const firstDayOffset = getFirstDayOfMonth(istDate);
+      const monthName = istDate.toLocaleString('en-US', { month: 'short' });
+      const year = istDate.getFullYear();
 
       // Calendar grid layout
       const columns = 7;
@@ -174,25 +176,35 @@ export default function WallpaperCanvas({
       const gridHeight = rows * cellSize;
 
       // Font sizes
+      const monthTitleFontSize = Math.max(36, Math.floor(width / 24));
       const dayNameFontSize = Math.max(24, Math.floor(width / 40));
       const dateFontSize = Math.max(32, Math.floor(width / 28));
       const subtitleFontSize = Math.max(28, Math.floor(width / 32));
       const customTextFontSize = Math.max(42, Math.floor(width / 20));
 
       // Calculate total content height
+      const monthTitleHeight = monthTitleFontSize + 30;
       const headerHeight = dayNameFontSize + 20;
       const gridToSubtitleGap = 25;
       const subtitleBlockHeight = gridToSubtitleGap + subtitleFontSize;
-      const totalContentHeight = headerHeight + gridHeight + subtitleBlockHeight;
+      const totalContentHeight = monthTitleHeight + headerHeight + gridHeight + subtitleBlockHeight;
 
       // Center everything vertically, push down to avoid clock
       const verticalOffset = height * 0.05;
       const contentStartY = (height - totalContentHeight) / 2 + verticalOffset;
 
       const offsetX = (width - gridWidth) / 2;
-      const headerY = contentStartY;
+      const monthTitleY = contentStartY;
+      const headerY = monthTitleY + monthTitleHeight;
       const gridStartY = headerY + headerHeight;
       const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
+
+      // Draw month title (e.g., "Feb 2026")
+      ctx.font = `600 ${monthTitleFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = filledColor;
+      ctx.fillText(`${monthName} ${year}`, width / 2, monthTitleY + monthTitleHeight / 2);
 
       // Draw day name headers
       ctx.font = `500 ${dayNameFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
@@ -205,6 +217,31 @@ export default function WallpaperCanvas({
         const y = headerY + headerHeight / 2;
         ctx.fillText(DAY_NAMES[i], x, y);
       }
+
+      // Draw grid lines
+      ctx.strokeStyle = emptyColor;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.3;
+
+      // Horizontal lines
+      for (let row = 0; row <= rows; row++) {
+        const y = gridStartY + row * cellSize;
+        ctx.beginPath();
+        ctx.moveTo(offsetX, y);
+        ctx.lineTo(offsetX + gridWidth, y);
+        ctx.stroke();
+      }
+
+      // Vertical lines
+      for (let col = 0; col <= columns; col++) {
+        const x = offsetX + col * cellSize;
+        ctx.beginPath();
+        ctx.moveTo(x, gridStartY);
+        ctx.lineTo(x, gridStartY + gridHeight);
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = 1;
 
       // Draw calendar cells
       for (let i = 0; i < rows * columns; i++) {
@@ -259,8 +296,8 @@ export default function WallpaperCanvas({
       const daysLeftWidth = ctx.measureText(daysLeftText).width;
       const separatorWidth = ctx.measureText(separatorText).width;
       const percentWidth = ctx.measureText(percentText).width;
-      const totalWidth = daysLeftWidth + separatorWidth + percentWidth;
-      const startX = (width - totalWidth) / 2;
+      const totalTextWidth = daysLeftWidth + separatorWidth + percentWidth;
+      const startX = (width - totalTextWidth) / 2;
 
       // Draw "Xd left" in orange
       ctx.fillStyle = '#FFA500';

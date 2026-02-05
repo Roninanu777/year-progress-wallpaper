@@ -17,8 +17,8 @@ function getFirstDayOfMonth(date: Date): number {
   return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 }
 
-function getMonthName(date: Date): string {
-  return date.toLocaleString('en-US', { month: 'long' });
+function getMonthNameShort(date: Date): string {
+  return date.toLocaleString('en-US', { month: 'short' });
 }
 
 export async function GET(request: NextRequest) {
@@ -44,7 +44,8 @@ export async function GET(request: NextRequest) {
   const totalDays = getDaysInMonth(istDate);
   const dayOfMonth = getDayOfMonth(istDate);
   const firstDayOffset = getFirstDayOfMonth(istDate);
-  const monthName = getMonthName(istDate);
+  const monthName = getMonthNameShort(istDate);
+  const year = istDate.getFullYear();
 
   // Calendar grid layout
   const columns = 7;
@@ -57,25 +58,29 @@ export async function GET(request: NextRequest) {
   const gridHeight = rows * cellSize;
 
   // Font sizes
+  const monthTitleFontSize = Math.max(36, Math.floor(width / 24));
   const dayNameFontSize = Math.max(24, Math.floor(width / 40));
   const dateFontSize = Math.max(32, Math.floor(width / 28));
   const subtitleFontSize = Math.max(28, Math.floor(width / 32));
   const customTextFontSize = Math.max(42, Math.floor(width / 20));
 
   // Calculate total content height
+  const monthTitleHeight = monthTitleFontSize + 30;
   const headerHeight = dayNameFontSize + 20;
   const gridToSubtitleGap = 25;
   const subtitleBlockHeight = gridToSubtitleGap + subtitleFontSize;
-  const totalContentHeight = headerHeight + gridHeight + subtitleBlockHeight;
+  const totalContentHeight = monthTitleHeight + headerHeight + gridHeight + subtitleBlockHeight;
 
   // Center everything vertically, push down to avoid clock
   const verticalOffset = height * 0.05;
   const contentStartY = (height - totalContentHeight) / 2 + verticalOffset;
 
   const offsetX = (width - gridWidth) / 2;
-  const headerY = contentStartY;
+  const monthTitleY = contentStartY;
+  const headerY = monthTitleY + monthTitleHeight;
   const gridStartY = headerY + headerHeight;
   const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
+  const gridLineColor = emptyColor;
 
   // Generate day name headers
   const dayHeaders = DAY_NAMES.map((day, i) => (
@@ -165,6 +170,45 @@ export async function GET(request: NextRequest) {
   // Determine which font family to use for custom text
   const customFontFamily = font || 'serif';
 
+  // Generate grid lines
+  const gridLines = [];
+
+  // Horizontal lines
+  for (let row = 0; row <= rows; row++) {
+    gridLines.push(
+      <div
+        key={`h-line-${row}`}
+        style={{
+          position: 'absolute',
+          left: offsetX,
+          top: gridStartY + row * cellSize,
+          width: gridWidth,
+          height: 1,
+          backgroundColor: gridLineColor,
+          opacity: 0.3,
+        }}
+      />
+    );
+  }
+
+  // Vertical lines
+  for (let col = 0; col <= columns; col++) {
+    gridLines.push(
+      <div
+        key={`v-line-${col}`}
+        style={{
+          position: 'absolute',
+          left: offsetX + col * cellSize,
+          top: gridStartY,
+          width: 1,
+          height: gridHeight,
+          backgroundColor: gridLineColor,
+          opacity: 0.3,
+        }}
+      />
+    );
+  }
+
   return new ImageResponse(
     (
       <div
@@ -177,8 +221,31 @@ export async function GET(request: NextRequest) {
           position: 'relative',
         }}
       >
+        {/* Month title */}
+        <div
+          style={{
+            position: 'absolute',
+            top: monthTitleY,
+            left: 0,
+            right: 0,
+            height: monthTitleHeight,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: monthTitleFontSize,
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 600,
+            color: filledColor,
+          }}
+        >
+          {monthName} {year}
+        </div>
+
         {/* Day name headers */}
         {dayHeaders}
+
+        {/* Grid lines */}
+        {gridLines}
 
         {/* Calendar cells */}
         {cells}
