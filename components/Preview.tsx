@@ -15,6 +15,7 @@ interface PreviewProps {
   showCustomText: boolean;
   customText: string;
   font: string;
+  mode?: 'year' | 'month';
 }
 
 export default function Preview({
@@ -28,6 +29,7 @@ export default function Preview({
   showCustomText,
   customText,
   font,
+  mode = 'year',
 }: PreviewProps) {
   const deviceConfig = DEVICE_PRESETS[device];
   const aspectRatio = deviceConfig.height / deviceConfig.width;
@@ -55,6 +57,7 @@ export default function Preview({
           showCustomText={showCustomText}
           customText={customText}
           font={font}
+          mode={mode}
         />
       </DeviceFrame>
 

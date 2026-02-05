@@ -5,7 +5,7 @@ import Preview from '@/components/Preview';
 import Controls from '@/components/Controls';
 import ShortcutInstructions from '@/components/ShortcutInstructions';
 import { DEFAULT_SETTINGS, DEVICE_PRESETS, DevicePresetKey, FontKey } from '@/lib/constants';
-import { generateApiUrl, getDayOfYear, getDaysRemaining, getYearProgress } from '@/lib/utils';
+import { generateApiUrl, getDayOfYear, getDaysRemaining, getYearProgress, getDayOfMonth, getMonthDaysRemaining, getMonthProgress, getMonthName } from '@/lib/utils';
 
 export default function Home() {
   const [device, setDevice] = useState<DevicePresetKey>(DEFAULT_SETTINGS.device);
@@ -18,6 +18,7 @@ export default function Home() {
   const [showCustomText, setShowCustomText] = useState(DEFAULT_SETTINGS.showCustomText);
   const [customText, setCustomText] = useState(DEFAULT_SETTINGS.customText);
   const [font, setFont] = useState<FontKey>(DEFAULT_SETTINGS.font);
+  const [mode, setMode] = useState<'year' | 'month'>('year');
 
   const deviceConfig = DEVICE_PRESETS[device];
 
@@ -35,12 +36,18 @@ export default function Home() {
       showCustomText,
       customText,
       font,
-    });
-  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, showCustomText, customText, font, deviceConfig]);
+    }, mode);
+  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, showCustomText, customText, font, deviceConfig, mode]);
 
   const dayOfYear = getDayOfYear();
   const daysRemaining = getDaysRemaining();
-  const progress = getYearProgress();
+  const yearProgress = getYearProgress();
+  const dayOfMonth = getDayOfMonth();
+  const monthDaysRemaining = getMonthDaysRemaining();
+  const monthProgress = getMonthProgress();
+  const monthName = getMonthName();
+
+  const progress = mode === 'year' ? yearProgress : monthProgress;
 
   return (
     <main className="min-h-screen">
@@ -50,18 +57,47 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-white">
-                Year Progress Wallpaper
+                {mode === 'year' ? 'Year Progress Wallpaper' : 'Month Progress Wallpaper'}
               </h1>
               <p className="text-sm text-zinc-400 mt-1 hidden sm:block">
-                Visualize your year with a customizable circle grid
+                {mode === 'year'
+                  ? 'Visualize your year with a customizable circle grid'
+                  : 'Visualize your month with a customizable calendar grid'}
               </p>
             </div>
-            <div className="text-right">
-              <div className="text-2xl sm:text-3xl font-bold text-white">
-                {progress.toFixed(1)}%
+            <div className="flex items-center gap-4 sm:gap-6">
+              {/* Mode Toggle */}
+              <div className="flex bg-zinc-800 rounded-lg p-1">
+                <button
+                  onClick={() => setMode('year')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                    mode === 'year'
+                      ? 'bg-emerald-500 text-white'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Year
+                </button>
+                <button
+                  onClick={() => setMode('month')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                    mode === 'month'
+                      ? 'bg-emerald-500 text-white'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Month
+                </button>
               </div>
-              <div className="text-xs sm:text-sm text-zinc-400">
-                Day {dayOfYear} • {daysRemaining} remaining
+              <div className="text-right">
+                <div className="text-2xl sm:text-3xl font-bold text-white">
+                  {progress.toFixed(1)}%
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
+                  {mode === 'year'
+                    ? `Day ${dayOfYear} • ${daysRemaining} remaining`
+                    : `Day ${dayOfMonth} of ${monthName} • ${monthDaysRemaining} remaining`}
+                </div>
               </div>
             </div>
           </div>
@@ -88,6 +124,7 @@ export default function Home() {
                 showCustomText={showCustomText}
                 customText={customText}
                 font={font}
+                mode={mode}
               />
             </div>
           </div>
@@ -118,6 +155,7 @@ export default function Home() {
               setCustomText={setCustomText}
               font={font}
               setFont={setFont}
+              mode={mode}
             />
 
             {/* iOS Shortcut Instructions */}

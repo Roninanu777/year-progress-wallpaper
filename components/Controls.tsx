@@ -25,6 +25,7 @@ interface ControlsProps {
   setCustomText: (text: string) => void;
   font: FontKey;
   setFont: (font: FontKey) => void;
+  mode?: 'year' | 'month';
 }
 
 export default function Controls({
@@ -48,6 +49,7 @@ export default function Controls({
   setCustomText,
   font,
   setFont,
+  mode = 'year',
 }: ControlsProps) {
   const deviceConfig = DEVICE_PRESETS[device];
 
@@ -64,7 +66,7 @@ export default function Controls({
       showCustomText,
       customText,
       font,
-    });
+    }, mode);
 
     try {
       const response = await fetch(url);
@@ -73,7 +75,7 @@ export default function Controls({
 
       const a = document.createElement('a');
       a.href = downloadUrl;
-      a.download = `year-progress-wallpaper-${new Date().toISOString().split('T')[0]}.png`;
+      a.download = `${mode}-progress-wallpaper-${new Date().toISOString().split('T')[0]}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -97,7 +99,7 @@ export default function Controls({
       showCustomText,
       customText,
       font,
-    });
+    }, mode);
 
     navigator.clipboard.writeText(url);
     alert('URL copied to clipboard!');

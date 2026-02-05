@@ -41,6 +41,52 @@ export function getYearProgress(date: Date = new Date()): number {
 }
 
 /**
+ * Get the total number of days in a month
+ */
+export function getDaysInMonth(date: Date = new Date()): number {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+}
+
+/**
+ * Get the current day of the month (1-indexed)
+ */
+export function getDayOfMonth(date: Date = new Date()): number {
+  return date.getDate();
+}
+
+/**
+ * Get days remaining in the month
+ */
+export function getMonthDaysRemaining(date: Date = new Date()): number {
+  const totalDays = getDaysInMonth(date);
+  const dayOfMonth = getDayOfMonth(date);
+  return totalDays - dayOfMonth;
+}
+
+/**
+ * Get month progress as a percentage
+ */
+export function getMonthProgress(date: Date = new Date()): number {
+  const totalDays = getDaysInMonth(date);
+  const dayOfMonth = getDayOfMonth(date);
+  return (dayOfMonth / totalDays) * 100;
+}
+
+/**
+ * Get month name
+ */
+export function getMonthName(date: Date = new Date()): string {
+  return date.toLocaleString('en-US', { month: 'long' });
+}
+
+/**
+ * Get the day of week for the first day of the month (0 = Sunday, 6 = Saturday)
+ */
+export function getFirstDayOfMonth(date: Date = new Date()): number {
+  return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+}
+
+/**
  * Convert hex color to a format without #
  */
 export function hexToParam(hex: string): string {
@@ -71,7 +117,8 @@ export function generateApiUrl(
     showCustomText: boolean;
     customText: string;
     font: string;
-  }
+  },
+  mode: 'year' | 'month' = 'year'
 ): string {
   const params = new URLSearchParams({
     width: settings.width.toString(),
@@ -87,7 +134,8 @@ export function generateApiUrl(
     font: settings.font,
   });
 
-  return `${baseUrl}/api/wallpaper?${params.toString()}`;
+  const endpoint = mode === 'month' ? '/api/wallpaper/month' : '/api/wallpaper';
+  return `${baseUrl}${endpoint}?${params.toString()}`;
 }
 
 /**
