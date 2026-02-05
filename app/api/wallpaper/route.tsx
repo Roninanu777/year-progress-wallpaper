@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
           position: 'relative',
         }}
       >
-        {/* Subtitle - "X days left" */}
+        {/* Subtitle - "Xd left" */}
         <div
           style={{
             position: 'absolute',
@@ -167,14 +167,14 @@ export async function GET(request: NextRequest) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            color: '#888888',
+            color: '#FFA500',
             fontSize: subtitleFontSize,
             fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 400,
             letterSpacing: '0.02em',
           }}
         >
-          {totalDays - dayOfYear} days left
+          {totalDays - dayOfYear}d left
         </div>
 
         {/* Circles grid */}

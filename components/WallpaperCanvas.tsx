@@ -86,11 +86,11 @@ export default function WallpaperCanvas({
 
     // Draw subtitle (below grid)
     const daysLeft = totalDays - dayOfYear;
-    ctx.fillStyle = '#888888';
+    ctx.fillStyle = '#FFA500';
     ctx.font = `400 ${subtitleFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText(`${daysLeft} days left`, width / 2, subtitleY);
+    ctx.fillText(`${daysLeft}d left`, width / 2, subtitleY);
 
     // Draw circles
     for (let i = 0; i < totalDays; i++) {
