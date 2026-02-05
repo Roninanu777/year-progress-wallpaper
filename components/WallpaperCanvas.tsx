@@ -92,7 +92,7 @@ export default function WallpaperCanvas({
 
     // Measure text widths for positioning
     const daysLeftText = `${daysLeft}d left`;
-    const separatorText = ' · ';
+    const separatorText = '  •  ';
     const percentText = `${percentComplete}%`;
     const daysLeftWidth = ctx.measureText(daysLeftText).width;
     const separatorWidth = ctx.measureText(separatorText).width;
