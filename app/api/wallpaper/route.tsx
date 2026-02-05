@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
           position: 'relative',
         }}
       >
-        {/* Subtitle - "Xd left" */}
+        {/* Subtitle - "Xd left · X%" */}
         <div
           style={{
             position: 'absolute',
@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
             letterSpacing: '0.02em',
           }}
         >
-          {totalDays - dayOfYear}d left
+          {totalDays - dayOfYear}d left · {((dayOfYear / totalDays) * 100).toFixed(1)}%
         </div>
 
         {/* Circles grid */}
