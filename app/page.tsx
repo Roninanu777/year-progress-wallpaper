@@ -45,14 +45,14 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-stone-700/50 bg-stone-900/80 backdrop-blur-sm sticky top-0 z-20">
+      <header className="border-b border-zinc-700/50 bg-zinc-900/80 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-white">
                 Year Progress Wallpaper
               </h1>
-              <p className="text-sm text-stone-400 mt-1 hidden sm:block">
+              <p className="text-sm text-zinc-400 mt-1 hidden sm:block">
                 Visualize your year with a customizable circle grid
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function Home() {
               <div className="text-2xl sm:text-3xl font-bold text-white">
                 {progress.toFixed(1)}%
               </div>
-              <div className="text-xs sm:text-sm text-stone-400">
+              <div className="text-xs sm:text-sm text-zinc-400">
                 Day {dayOfYear} • {daysRemaining} remaining
               </div>
             </div>
@@ -129,9 +129,9 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-stone-700/50 mt-16">
+      <footer className="border-t border-zinc-700/50 mt-16">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="text-center text-sm text-stone-500">
+          <div className="text-center text-sm text-zinc-500">
             <p>
               Generate beautiful year-progress wallpapers for your iPhone.
               <br className="sm:hidden" />

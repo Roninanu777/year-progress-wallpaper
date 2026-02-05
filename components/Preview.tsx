@@ -58,7 +58,7 @@ export default function Preview({
         />
       </DeviceFrame>
 
-      <p className="mt-4 text-sm text-stone-400">
+      <p className="mt-4 text-sm text-zinc-400">
         {deviceConfig.name} ({deviceConfig.width} × {deviceConfig.height})
       </p>
     </div>

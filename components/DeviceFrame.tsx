@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import Image from 'next/image';
 
 interface DeviceFrameProps {
   children: ReactNode;
@@ -8,31 +9,58 @@ interface DeviceFrameProps {
 }
 
 export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps) {
+  // Frame dimensions match the SVG viewBox ratio (320x654)
+  const frameWidth = 280;
+  const frameHeight = Math.round(frameWidth * (654 / 320));
+
+  // Screen area within the frame (accounting for bezels)
+  // SVG screen is at x=12, y=12, width=296, height=630 within 320x654
+  const screenPaddingX = (12 / 320) * frameWidth;
+  const screenPaddingTop = (12 / 654) * frameHeight;
+  const screenWidth = (296 / 320) * frameWidth;
+  const screenHeight = (630 / 654) * frameHeight;
+
   return (
-    <div className="relative">
-      {/* iPhone frame */}
+    <div className="relative flex justify-center">
+      {/* Container for proper sizing */}
       <div
-        className="relative bg-stone-800 rounded-[3rem] p-3 shadow-2xl mx-auto ring-1 ring-stone-700/50"
+        className="relative"
         style={{
-          width: '280px',
-          maxWidth: '100%',
+          width: frameWidth,
+          height: frameHeight,
         }}
       >
-        {/* Notch / Dynamic Island */}
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-10" />
-
-        {/* Screen */}
+        {/* Screen content - positioned behind the frame */}
         <div
-          className="relative bg-black rounded-[2.5rem] overflow-hidden"
+          className="absolute overflow-hidden"
           style={{
-            aspectRatio: `1 / ${aspectRatio}`,
+            left: screenPaddingX,
+            top: screenPaddingTop,
+            width: screenWidth,
+            height: screenHeight,
+            borderRadius: '38px',
           }}
         >
-          {children}
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              aspectRatio: `1 / ${aspectRatio}`,
+            }}
+          >
+            {children}
+          </div>
         </div>
 
-        {/* Home indicator */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-stone-600 rounded-full" />
+        {/* iPhone frame overlay */}
+        <Image
+          src="/devices/iphone-frame.svg"
+          alt="iPhone frame"
+          width={frameWidth}
+          height={frameHeight}
+          className="pointer-events-none relative z-10"
+          priority
+        />
       </div>
     </div>
   );

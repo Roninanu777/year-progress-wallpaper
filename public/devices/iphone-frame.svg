@@ -1,0 +1,47 @@
+<svg width="320" height="654" viewBox="0 0 320 654" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer frame with gradient -->
+  <defs>
+    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a2a2e"/>
+      <stop offset="50%" stop-color="#1a1a1c"/>
+      <stop offset="100%" stop-color="#2a2a2e"/>
+    </linearGradient>
+    <linearGradient id="bezelGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3a3a3e"/>
+      <stop offset="50%" stop-color="#1a1a1c"/>
+      <stop offset="100%" stop-color="#3a3a3e"/>
+    </linearGradient>
+    <linearGradient id="buttonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4a4a4e"/>
+      <stop offset="50%" stop-color="#3a3a3c"/>
+      <stop offset="100%" stop-color="#4a4a4e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main phone body -->
+  <rect x="2" y="2" width="316" height="650" rx="54" ry="54" fill="url(#frameGradient)" stroke="#1a1a1c" stroke-width="2"/>
+
+  <!-- Inner bezel -->
+  <rect x="6" y="6" width="308" height="642" rx="50" ry="50" fill="url(#bezelGradient)"/>
+
+  <!-- Screen cutout (this is where content shows through) -->
+  <rect x="12" y="12" width="296" height="630" rx="44" ry="44" fill="black"/>
+
+  <!-- Dynamic Island -->
+  <rect x="110" y="22" width="100" height="34" rx="17" ry="17" fill="#000"/>
+  <rect x="111" y="23" width="98" height="32" rx="16" ry="16" fill="#0a0a0a"/>
+
+  <!-- Side buttons - Left (Silent/Action + Volume) -->
+  <rect x="0" y="140" width="3" height="32" rx="1.5" fill="url(#buttonGradient)"/>
+  <rect x="0" y="200" width="3" height="56" rx="1.5" fill="url(#buttonGradient)"/>
+  <rect x="0" y="264" width="3" height="56" rx="1.5" fill="url(#buttonGradient)"/>
+
+  <!-- Side button - Right (Power) -->
+  <rect x="317" y="210" width="3" height="80" rx="1.5" fill="url(#buttonGradient)"/>
+
+  <!-- Home indicator -->
+  <rect x="110" y="632" width="100" height="5" rx="2.5" fill="#3a3a3c"/>
+
+  <!-- Subtle frame highlights -->
+  <rect x="3" y="3" width="314" height="648" rx="53" ry="53" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+</svg>
