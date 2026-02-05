@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
   const headerY = monthTitleY + monthTitleHeight;
   const gridStartY = headerY + headerHeight;
   const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
-  const gridLineColor = emptyColor;
+  const gridLineColor = '#666666';
 
   // Generate day name headers
   const dayHeaders = DAY_NAMES.map((day, i) => (
@@ -185,7 +185,6 @@ export async function GET(request: NextRequest) {
           width: gridWidth,
           height: 1,
           backgroundColor: gridLineColor,
-          opacity: 0.3,
         }}
       />
     );
@@ -203,7 +202,6 @@ export async function GET(request: NextRequest) {
           width: 1,
           height: gridHeight,
           backgroundColor: gridLineColor,
-          opacity: 0.3,
         }}
       />
     );

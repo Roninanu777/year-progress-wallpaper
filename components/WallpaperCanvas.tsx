@@ -219,9 +219,8 @@ export default function WallpaperCanvas({
       }
 
       // Draw grid lines
-      ctx.strokeStyle = emptyColor;
+      ctx.strokeStyle = '#666666';
       ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.3;
 
       // Horizontal lines
       for (let row = 0; row <= rows; row++) {
@@ -240,8 +239,6 @@ export default function WallpaperCanvas({
         ctx.lineTo(x, gridStartY + gridHeight);
         ctx.stroke();
       }
-
-      ctx.globalAlpha = 1;
 
       // Draw calendar cells
       for (let i = 0; i < rows * columns; i++) {
