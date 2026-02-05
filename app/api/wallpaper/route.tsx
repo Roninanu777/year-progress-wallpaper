@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
   const customText = searchParams.get('customText') || '';
   const font = searchParams.get('font') || 'Lora';
   const highlightColor = `#${searchParams.get('highlightColor') || 'FFD700'}`;
+  const accentColor = `#${searchParams.get('accentColor') || 'FFA500'}`;
 
   // Calculate day of year in IST (UTC+5:30)
   const now = new Date();
@@ -173,9 +174,9 @@ export async function GET(request: NextRequest) {
             letterSpacing: '0.02em',
           }}
         >
-          <span style={{ color: '#FFA500' }}>{totalDays - dayOfYear}d left</span>
-          <span style={{ color: '#FFFFFF', marginLeft: 16, marginRight: 16 }}>•</span>
-          <span style={{ color: '#FFFFFF' }}>{((dayOfYear / totalDays) * 100).toFixed(1)}%</span>
+          <span style={{ color: accentColor }}>{totalDays - dayOfYear}d left</span>
+          <span style={{ color: textColor, marginLeft: 16, marginRight: 16 }}>•</span>
+          <span style={{ color: textColor }}>{((dayOfYear / totalDays) * 100).toFixed(1)}%</span>
         </div>
 
         {/* Circles grid */}

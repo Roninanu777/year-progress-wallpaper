@@ -19,6 +19,8 @@ interface ControlsProps {
   setSpacing: (spacing: number) => void;
   textColor: string;
   setTextColor: (color: string) => void;
+  accentColor: string;
+  setAccentColor: (color: string) => void;
   showCustomText: boolean;
   setShowCustomText: (show: boolean) => void;
   customText: string;
@@ -43,6 +45,8 @@ export default function Controls({
   setSpacing,
   textColor,
   setTextColor,
+  accentColor,
+  setAccentColor,
   showCustomText,
   setShowCustomText,
   customText,
@@ -63,6 +67,7 @@ export default function Controls({
       radius,
       spacing,
       textColor,
+      accentColor,
       showCustomText,
       customText,
       font,
@@ -96,6 +101,7 @@ export default function Controls({
       radius,
       spacing,
       textColor,
+      accentColor,
       showCustomText,
       customText,
       font,
@@ -111,6 +117,7 @@ export default function Controls({
     setFilledColor(theme.filledColor);
     setEmptyColor(theme.emptyColor);
     setTextColor(theme.textColor);
+    setAccentColor(theme.accentColor);
   };
 
   return (
@@ -169,6 +176,7 @@ export default function Controls({
           <ColorPicker label="Filled Circles (Days Passed)" color={filledColor} onChange={setFilledColor} />
           <ColorPicker label="Empty Circles (Days Remaining)" color={emptyColor} onChange={setEmptyColor} />
           <ColorPicker label="Text Color" color={textColor} onChange={setTextColor} />
+          <ColorPicker label="Accent Color (Days Left)" color={accentColor} onChange={setAccentColor} />
         </div>
       </section>
 

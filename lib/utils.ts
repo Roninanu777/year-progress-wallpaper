@@ -114,6 +114,7 @@ export function generateApiUrl(
     radius: number;
     spacing: number;
     textColor: string;
+    accentColor: string;
     showCustomText: boolean;
     customText: string;
     font: string;
@@ -129,6 +130,7 @@ export function generateApiUrl(
     radius: settings.radius.toString(),
     spacing: settings.spacing.toString(),
     textColor: hexToParam(settings.textColor),
+    accentColor: hexToParam(settings.accentColor),
     showCustomText: settings.showCustomText.toString(),
     customText: settings.customText,
     font: settings.font,

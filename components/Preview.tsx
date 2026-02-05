@@ -12,6 +12,7 @@ interface PreviewProps {
   radius: number;
   spacing: number;
   textColor: string;
+  accentColor?: string;
   showCustomText: boolean;
   customText: string;
   font: string;
@@ -26,6 +27,7 @@ export default function Preview({
   radius,
   spacing,
   textColor,
+  accentColor = '#FFA500',
   showCustomText,
   customText,
   font,
@@ -54,6 +56,7 @@ export default function Preview({
           radius={scaledRadius}
           spacing={scaledSpacing}
           textColor={textColor}
+          accentColor={accentColor}
           showCustomText={showCustomText}
           customText={customText}
           font={font}

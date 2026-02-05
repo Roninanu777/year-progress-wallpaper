@@ -32,6 +32,7 @@ export const DEFAULT_SETTINGS = {
   radius: 12,
   spacing: 6,
   textColor: '#FFFFFF',
+  accentColor: '#FFA500',
   showCustomText: false,
   customText: '',
   font: 'Lora' as FontKey,
@@ -44,6 +45,7 @@ export const PRESET_THEMES = {
     filledColor: '#FFFFFF',
     emptyColor: '#333333',
     textColor: '#FFFFFF',
+    accentColor: '#FFA500',
   },
   neon: {
     name: 'Neon',
@@ -51,6 +53,7 @@ export const PRESET_THEMES = {
     filledColor: '#22c55e',
     emptyColor: '#1a1a1a',
     textColor: '#22c55e',
+    accentColor: '#4ade80',
   },
   ocean: {
     name: 'Ocean',
@@ -58,6 +61,7 @@ export const PRESET_THEMES = {
     filledColor: '#38bdf8',
     emptyColor: '#0369a1',
     textColor: '#bae6fd',
+    accentColor: '#38bdf8',
   },
   sunset: {
     name: 'Sunset',
@@ -65,6 +69,7 @@ export const PRESET_THEMES = {
     filledColor: '#f97316',
     emptyColor: '#292524',
     textColor: '#fed7aa',
+    accentColor: '#f97316',
   },
   lavender: {
     name: 'Lavender',
@@ -72,6 +77,7 @@ export const PRESET_THEMES = {
     filledColor: '#a78bfa',
     emptyColor: '#312e81',
     textColor: '#c4b5fd',
+    accentColor: '#a78bfa',
   },
   midnight: {
     name: 'Midnight',
@@ -79,6 +85,7 @@ export const PRESET_THEMES = {
     filledColor: '#7dd3fc',
     emptyColor: '#1e293b',
     textColor: '#e0f2fe',
+    accentColor: '#38bdf8',
   },
   rose: {
     name: 'Rose',
@@ -86,6 +93,7 @@ export const PRESET_THEMES = {
     filledColor: '#fb7185',
     emptyColor: '#2d1520',
     textColor: '#fda4af',
+    accentColor: '#fb7185',
   },
   teal: {
     name: 'Teal',
@@ -93,6 +101,7 @@ export const PRESET_THEMES = {
     filledColor: '#2dd4bf',
     emptyColor: '#134e4a',
     textColor: '#99f6e4',
+    accentColor: '#2dd4bf',
   },
   mocha: {
     name: 'Mocha',
@@ -100,6 +109,7 @@ export const PRESET_THEMES = {
     filledColor: '#d4a574',
     emptyColor: '#2e211c',
     textColor: '#e8c9a8',
+    accentColor: '#d4a574',
   },
   crimson: {
     name: 'Crimson',
@@ -107,6 +117,7 @@ export const PRESET_THEMES = {
     filledColor: '#ef4444',
     emptyColor: '#2d1515',
     textColor: '#fca5a5',
+    accentColor: '#ef4444',
   },
   arctic: {
     name: 'Arctic',
@@ -114,6 +125,7 @@ export const PRESET_THEMES = {
     filledColor: '#e2e8f0',
     emptyColor: '#1e2a45',
     textColor: '#f1f5f9',
+    accentColor: '#94a3b8',
   },
   amber: {
     name: 'Amber',
@@ -121,6 +133,7 @@ export const PRESET_THEMES = {
     filledColor: '#fbbf24',
     emptyColor: '#2e2308',
     textColor: '#fde68a',
+    accentColor: '#f59e0b',
   },
 } as const;
 

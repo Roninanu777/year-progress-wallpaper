@@ -15,6 +15,7 @@ export default function Home() {
   const [radius, setRadius] = useState(DEFAULT_SETTINGS.radius);
   const [spacing, setSpacing] = useState(DEFAULT_SETTINGS.spacing);
   const [textColor, setTextColor] = useState(DEFAULT_SETTINGS.textColor);
+  const [accentColor, setAccentColor] = useState(DEFAULT_SETTINGS.accentColor);
   const [showCustomText, setShowCustomText] = useState(DEFAULT_SETTINGS.showCustomText);
   const [customText, setCustomText] = useState(DEFAULT_SETTINGS.customText);
   const [font, setFont] = useState<FontKey>(DEFAULT_SETTINGS.font);
@@ -33,11 +34,12 @@ export default function Home() {
       radius,
       spacing,
       textColor,
+      accentColor,
       showCustomText,
       customText,
       font,
     }, mode);
-  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, showCustomText, customText, font, deviceConfig, mode]);
+  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, deviceConfig, mode]);
 
   const dayOfYear = getDayOfYear();
   const daysRemaining = getDaysRemaining();
@@ -121,6 +123,7 @@ export default function Home() {
                 radius={radius}
                 spacing={spacing}
                 textColor={textColor}
+                accentColor={accentColor}
                 showCustomText={showCustomText}
                 customText={customText}
                 font={font}
@@ -149,6 +152,8 @@ export default function Home() {
               setSpacing={setSpacing}
               textColor={textColor}
               setTextColor={setTextColor}
+              accentColor={accentColor}
+              setAccentColor={setAccentColor}
               showCustomText={showCustomText}
               setShowCustomText={setShowCustomText}
               customText={customText}

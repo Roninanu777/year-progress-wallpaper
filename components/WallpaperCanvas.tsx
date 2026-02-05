@@ -12,6 +12,7 @@ interface WallpaperCanvasProps {
   radius: number;
   spacing: number;
   textColor: string;
+  accentColor?: string;
   showCustomText: boolean;
   customText: string;
   font: string;
@@ -30,6 +31,7 @@ export default function WallpaperCanvas({
   radius,
   spacing,
   textColor,
+  accentColor = '#FFA500',
   showCustomText,
   customText,
   font,
@@ -112,13 +114,13 @@ export default function WallpaperCanvas({
       const totalWidth = daysLeftWidth + separatorWidth + percentWidth;
       const startX = (width - totalWidth) / 2;
 
-      // Draw "329d left" in orange
-      ctx.fillStyle = '#FFA500';
+      // Draw "329d left" in accent color
+      ctx.fillStyle = accentColor;
       ctx.textAlign = 'left';
       ctx.fillText(daysLeftText, startX, subtitleY);
 
-      // Draw " · " and percentage in white
-      ctx.fillStyle = '#FFFFFF';
+      // Draw " · " and percentage in text color
+      ctx.fillStyle = textColor;
       ctx.fillText(separatorText, startX + daysLeftWidth, subtitleY);
       ctx.fillText(percentText, startX + daysLeftWidth + separatorWidth, subtitleY);
 
@@ -296,13 +298,13 @@ export default function WallpaperCanvas({
       const totalTextWidth = daysLeftWidth + separatorWidth + percentWidth;
       const startX = (width - totalTextWidth) / 2;
 
-      // Draw "Xd left" in orange
-      ctx.fillStyle = '#FFA500';
+      // Draw "Xd left" in accent color
+      ctx.fillStyle = accentColor;
       ctx.textAlign = 'left';
       ctx.fillText(daysLeftText, startX, subtitleY);
 
-      // Draw " · " and percentage in white
-      ctx.fillStyle = '#FFFFFF';
+      // Draw " · " and percentage in text color
+      ctx.fillStyle = textColor;
       ctx.fillText(separatorText, startX + daysLeftWidth, subtitleY);
       ctx.fillText(percentText, startX + daysLeftWidth + separatorWidth, subtitleY);
 
@@ -315,7 +317,7 @@ export default function WallpaperCanvas({
         ctx.fillText(customText, width / 2, height - height * 0.08);
       }
     }
-  }, [width, height, bgColor, filledColor, emptyColor, radius, spacing, textColor, showCustomText, customText, font, highlightColor, mode]);
+  }, [width, height, bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, highlightColor, mode]);
 
   return (
     <canvas
