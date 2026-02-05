@@ -85,14 +85,15 @@ export async function GET(request: NextRequest) {
 
   // Font sizes (matching LifeGrid style)
   const titleFontSize = Math.max(36, Math.floor(width / 18));
-  const subtitleFontSize = Math.max(18, Math.floor(width / 45));
-  const customTextFontSize = Math.max(28, Math.floor(width / 28));
+  const subtitleFontSize = Math.max(28, Math.floor(width / 32));
+  const customTextFontSize = Math.max(42, Math.floor(width / 20));
 
-  // Calculate total content height (title + subtitle + grid)
-  const titleToSubtitleGap = 20;
-  const subtitleToGridGap = 30;
-  const titleBlockHeight = titleFontSize + titleToSubtitleGap + subtitleFontSize + subtitleToGridGap;
-  const totalContentHeight = titleBlockHeight + gridHeight;
+  // Calculate total content height (title + grid + subtitle below)
+  const titleToGridGap = 30;
+  const gridToSubtitleGap = 25;
+  const titleBlockHeight = titleFontSize + titleToGridGap;
+  const subtitleBlockHeight = gridToSubtitleGap + subtitleFontSize;
+  const totalContentHeight = titleBlockHeight + gridHeight + subtitleBlockHeight;
 
   // Center everything vertically, but push down a bit to avoid clock (add 5% offset)
   const verticalOffset = height * 0.05;
@@ -101,9 +102,9 @@ export async function GET(request: NextRequest) {
   // Layout positioning
   const offsetX = (width - gridWidth) / 2;
   const titleY = contentStartY;
-  const subtitleY = titleY + titleFontSize + titleToSubtitleGap;
-  const gridStartY = subtitleY + subtitleFontSize + subtitleToGridGap;
+  const gridStartY = titleY + titleFontSize + titleToGridGap;
   const offsetY = gridStartY;
+  const subtitleY = gridStartY + gridHeight + gridToSubtitleGap;
 
   // Generate circles
   const circles = [];
