@@ -115,11 +115,11 @@ export default function Controls({
     <div className="space-y-8">
       {/* Device Selection */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4">Device</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider text-stone-400 mb-4">Device</h3>
         <select
           value={device}
           onChange={(e) => setDevice(e.target.value as DevicePresetKey)}
-          className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-blue-500"
+          className="w-full bg-stone-800 text-white rounded-xl px-4 py-3 border border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-600/50 focus:border-amber-600 transition-all duration-200"
         >
           {Object.entries(DEVICE_PRESETS).map(([key, preset]) => (
             <option key={key} value={key}>
@@ -131,13 +131,13 @@ export default function Controls({
 
       {/* Theme Presets */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4">Theme Presets</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider text-stone-400 mb-4">Theme Presets</h3>
         <div className="grid grid-cols-3 gap-2">
           {Object.entries(PRESET_THEMES).map(([key, theme]) => (
             <button
               key={key}
               onClick={() => applyTheme(key as ThemeKey)}
-              className="flex flex-col items-center p-3 bg-gray-800 rounded-lg border border-gray-700 hover:border-gray-500 transition-colors"
+              className="group flex flex-col items-center p-3 bg-stone-800/80 rounded-xl border border-stone-700 hover:bg-stone-700/50 hover:border-stone-600 transition-all duration-200"
             >
               <div className="flex gap-1 mb-2">
                 <div
@@ -153,7 +153,7 @@ export default function Controls({
                   style={{ backgroundColor: theme.emptyColor }}
                 />
               </div>
-              <span className="text-xs text-gray-300">{theme.name}</span>
+              <span className="text-xs text-stone-300">{theme.name}</span>
             </button>
           ))}
         </div>
@@ -161,7 +161,7 @@ export default function Controls({
 
       {/* Colors */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4">Colors</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider text-stone-400 mb-4">Colors</h3>
         <div className="space-y-4">
           <ColorPicker label="Background" color={bgColor} onChange={setBgColor} />
           <ColorPicker label="Filled Circles (Days Passed)" color={filledColor} onChange={setFilledColor} />
@@ -172,10 +172,10 @@ export default function Controls({
 
       {/* Size Controls */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4">Size</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider text-stone-400 mb-4">Size</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-stone-300 mb-2">
               Circle Radius: {radius}px
             </label>
             <input
@@ -184,11 +184,11 @@ export default function Controls({
               max="24"
               value={radius}
               onChange={(e) => setRadius(parseInt(e.target.value, 10))}
-              className="w-full accent-blue-500"
+              className="w-full"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-stone-300 mb-2">
               Spacing: {spacing}px
             </label>
             <input
@@ -197,7 +197,7 @@ export default function Controls({
               max="16"
               value={spacing}
               onChange={(e) => setSpacing(parseInt(e.target.value, 10))}
-              className="w-full accent-blue-500"
+              className="w-full"
             />
           </div>
         </div>
@@ -205,17 +205,17 @@ export default function Controls({
 
       {/* Text Options */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4">Options</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider text-stone-400 mb-4">Options</h3>
         <div className="space-y-4">
           {/* Font Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-stone-300 mb-2">
               Font
             </label>
             <select
               value={font}
               onChange={(e) => setFont(e.target.value as FontKey)}
-              className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-blue-500"
+              className="w-full bg-stone-800 text-white rounded-xl px-4 py-3 border border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-600/50 focus:border-amber-600 transition-all duration-200"
             >
               {Object.entries(FONT_OPTIONS).map(([key, name]) => (
                 <option key={key} value={key}>
@@ -231,15 +231,15 @@ export default function Controls({
               type="checkbox"
               checked={showCustomText}
               onChange={(e) => setShowCustomText(e.target.checked)}
-              className="w-5 h-5 rounded bg-gray-800 border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900"
+              className="w-5 h-5 rounded"
             />
-            <span className="text-gray-300">Add custom text</span>
+            <span className="text-stone-300">Add custom text</span>
           </label>
 
           {/* Custom Text Input */}
           {showCustomText && (
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-stone-300 mb-2">
                 Custom Text
               </label>
               <input
@@ -247,7 +247,7 @@ export default function Controls({
                 value={customText}
                 onChange={(e) => setCustomText(e.target.value)}
                 placeholder="Enter text to display below the grid"
-                className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                className="w-full bg-stone-800 text-white rounded-xl px-4 py-3 border border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-600/50 focus:border-amber-600 placeholder-stone-500 transition-all duration-200"
               />
             </div>
           )}
@@ -258,13 +258,13 @@ export default function Controls({
       <section className="space-y-3 pt-4">
         <button
           onClick={handleDownload}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          className="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-amber-900/30 transition-all duration-200"
         >
           Download Wallpaper
         </button>
         <button
           onClick={handleCopyUrl}
-          className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          className="w-full bg-stone-700 hover:bg-stone-600 text-white font-semibold py-3 px-6 rounded-xl border border-stone-600 transition-all duration-200"
         >
           Copy API URL for iOS Shortcut
         </button>

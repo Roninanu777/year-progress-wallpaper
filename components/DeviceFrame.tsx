@@ -12,7 +12,7 @@ export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps)
     <div className="relative">
       {/* iPhone frame */}
       <div
-        className="relative bg-gray-900 rounded-[3rem] p-3 shadow-2xl mx-auto"
+        className="relative bg-stone-800 rounded-[3rem] p-3 shadow-2xl mx-auto ring-1 ring-stone-700/50"
         style={{
           width: '280px',
           maxWidth: '100%',
@@ -32,7 +32,7 @@ export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps)
         </div>
 
         {/* Home indicator */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-gray-600 rounded-full" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-stone-600 rounded-full" />
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl border border-gray-700">
+    <div className="bg-stone-800/80 rounded-xl border border-stone-700">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-4 text-left"
@@ -26,11 +26,11 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
           <span className="text-2xl">📱</span>
           <div>
             <h3 className="font-semibold text-white">iOS Shortcut Setup</h3>
-            <p className="text-sm text-gray-400">Automate daily wallpaper updates</p>
+            <p className="text-sm text-stone-400">Automate daily wallpaper updates</p>
           </div>
         </div>
         <svg
-          className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-stone-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -42,16 +42,16 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
       {isOpen && (
         <div className="px-4 pb-4 space-y-4">
           {/* API URL */}
-          <div className="bg-gray-900 rounded-lg p-3">
-            <p className="text-xs text-gray-400 mb-2">Your personalized API URL:</p>
+          <div className="bg-stone-900 rounded-lg p-3">
+            <p className="text-xs text-stone-400 mb-2">Your personalized API URL:</p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 text-xs text-green-400 break-all">
+              <code className="flex-1 text-xs text-amber-400 break-all">
                 {apiUrl || 'Configure your wallpaper to generate URL'}
               </code>
               <button
                 onClick={handleCopy}
                 disabled={!apiUrl}
-                className="shrink-0 px-3 py-1 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-white text-sm rounded transition-colors"
+                className="shrink-0 px-3 py-1 bg-stone-700 hover:bg-stone-600 disabled:bg-stone-800 disabled:text-stone-600 text-white text-sm rounded transition-colors"
               >
                 {copied ? 'Copied!' : 'Copy'}
               </button>
@@ -61,9 +61,9 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
           {/* Instructions */}
           <div className="space-y-3">
             <h4 className="font-medium text-white">Setup Instructions:</h4>
-            <ol className="space-y-3 text-sm text-gray-300">
+            <ol className="space-y-3 text-sm text-stone-300">
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   1
                 </span>
                 <span>
@@ -71,7 +71,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   2
                 </span>
                 <span>
@@ -79,7 +79,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   3
                 </span>
                 <span>
@@ -87,7 +87,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   4
                 </span>
                 <span>
@@ -95,7 +95,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   5
                 </span>
                 <span>
@@ -103,7 +103,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-xs font-bold">
                   6
                 </span>
                 <span>
@@ -114,9 +114,9 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
           </div>
 
           {/* Automation */}
-          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
+          <div className="bg-stone-900/50 rounded-lg p-4 border border-stone-700">
             <h4 className="font-medium text-white mb-2">🔄 Daily Automation (Optional):</h4>
-            <ol className="space-y-2 text-sm text-gray-300">
+            <ol className="space-y-2 text-sm text-stone-300">
               <li>1. Go to <strong>Automation</strong> tab in Shortcuts</li>
               <li>2. Tap <strong>+</strong> → <strong>Time of Day</strong></li>
               <li>3. Set time (e.g., 6:00 AM)</li>
