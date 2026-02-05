@@ -167,14 +167,14 @@ export async function GET(request: NextRequest) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            color: '#FFA500',
             fontSize: subtitleFontSize,
             fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 400,
             letterSpacing: '0.02em',
           }}
         >
-          {totalDays - dayOfYear}d left · {((dayOfYear / totalDays) * 100).toFixed(1)}%
+          <span style={{ color: '#FFA500' }}>{totalDays - dayOfYear}d left</span>
+          <span style={{ color: '#FFFFFF' }}> · {((dayOfYear / totalDays) * 100).toFixed(1)}%</span>
         </div>
 
         {/* Circles grid */}

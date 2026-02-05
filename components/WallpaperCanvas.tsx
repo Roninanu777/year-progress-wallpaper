@@ -87,11 +87,28 @@ export default function WallpaperCanvas({
     // Draw subtitle (below grid)
     const daysLeft = totalDays - dayOfYear;
     const percentComplete = ((dayOfYear / totalDays) * 100).toFixed(1);
-    ctx.fillStyle = '#FFA500';
     ctx.font = `400 ${subtitleFontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
-    ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText(`${daysLeft}d left · ${percentComplete}%`, width / 2, subtitleY);
+
+    // Measure text widths for positioning
+    const daysLeftText = `${daysLeft}d left`;
+    const separatorText = ' · ';
+    const percentText = `${percentComplete}%`;
+    const daysLeftWidth = ctx.measureText(daysLeftText).width;
+    const separatorWidth = ctx.measureText(separatorText).width;
+    const percentWidth = ctx.measureText(percentText).width;
+    const totalWidth = daysLeftWidth + separatorWidth + percentWidth;
+    const startX = (width - totalWidth) / 2;
+
+    // Draw "329d left" in orange
+    ctx.fillStyle = '#FFA500';
+    ctx.textAlign = 'left';
+    ctx.fillText(daysLeftText, startX, subtitleY);
+
+    // Draw " · " and percentage in white
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(separatorText, startX + daysLeftWidth, subtitleY);
+    ctx.fillText(percentText, startX + daysLeftWidth + separatorWidth, subtitleY);
 
     // Draw circles
     for (let i = 0; i < totalDays; i++) {
