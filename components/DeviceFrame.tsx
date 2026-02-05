@@ -14,9 +14,9 @@ export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps)
   const frameHeight = Math.round(frameWidth * (654 / 320));
 
   // Screen area within the frame (accounting for bezels)
-  // SVG screen is at x=12, y=12, width=296, height=630 within 320x654
-  const screenPaddingX = (12 / 320) * frameWidth;
-  const screenPaddingTop = (12 / 654) * frameHeight;
+  // SVG screen cutout is at x=12, y=12, width=296, height=630 within 320x654
+  const screenLeft = (12 / 320) * frameWidth;
+  const screenTop = (12 / 654) * frameHeight;
   const screenWidth = (296 / 320) * frameWidth;
   const screenHeight = (630 / 654) * frameHeight;
 
@@ -30,26 +30,18 @@ export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps)
           height: frameHeight,
         }}
       >
-        {/* Screen content - positioned behind the frame */}
+        {/* Screen content - positioned to match the frame cutout */}
         <div
-          className="absolute overflow-hidden"
+          className="absolute overflow-hidden bg-black"
           style={{
-            left: screenPaddingX,
-            top: screenPaddingTop,
+            left: screenLeft,
+            top: screenTop,
             width: screenWidth,
             height: screenHeight,
             borderRadius: '38px',
           }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              aspectRatio: `1 / ${aspectRatio}`,
-            }}
-          >
-            {children}
-          </div>
+          {children}
         </div>
 
         {/* iPhone frame overlay */}
