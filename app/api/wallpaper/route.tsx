@@ -25,11 +25,6 @@ const FONT_URLS: Record<string, { regular: string; italic?: string; bold?: strin
   },
 };
 
-async function loadFont(url: string): Promise<ArrayBuffer> {
-  const response = await fetch(url);
-  return response.arrayBuffer();
-}
-
 function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }

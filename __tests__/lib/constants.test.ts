@@ -82,10 +82,10 @@ describe('PRESET_THEMES', () => {
   it('contains expected themes', () => {
     expect(PRESET_THEMES).toHaveProperty('minimal');
     expect(PRESET_THEMES).toHaveProperty('neon');
-    expect(PRESET_THEMES).toHaveProperty('pastel');
     expect(PRESET_THEMES).toHaveProperty('ocean');
     expect(PRESET_THEMES).toHaveProperty('sunset');
     expect(PRESET_THEMES).toHaveProperty('lavender');
+    expect(PRESET_THEMES).toHaveProperty('midnight');
   });
 
   it('has valid color values for all themes', () => {

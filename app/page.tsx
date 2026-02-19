@@ -39,7 +39,7 @@ export default function Home() {
       customText,
       font,
     }, mode);
-  }, [device, bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, deviceConfig, mode]);
+  }, [bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, deviceConfig, mode]);
 
   const dayOfYear = getDayOfYear();
   const daysRemaining = getDaysRemaining();

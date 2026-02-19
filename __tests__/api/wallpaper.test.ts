@@ -4,6 +4,7 @@
 
 import { GET } from '@/app/api/wallpaper/route';
 import { NextRequest } from 'next/server';
+import { ImageResponse } from 'next/og';
 
 // Mock ImageResponse
 jest.mock('next/og', () => ({
@@ -19,6 +20,8 @@ jest.mock('next/og', () => ({
 }));
 
 describe('GET /api/wallpaper', () => {
+  const mockedImageResponse = ImageResponse as jest.Mock;
+
   function createRequest(params: Record<string, string> = {}): NextRequest {
     const url = new URL('http://localhost:3000/api/wallpaper');
     Object.entries(params).forEach(([key, value]) => {
@@ -36,34 +39,31 @@ describe('GET /api/wallpaper', () => {
   });
 
   it('uses default parameters when none provided', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest();
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
-    const [, options] = ImageResponse.mock.calls[0];
+    expect(mockedImageResponse).toHaveBeenCalled();
+    const [, options] = mockedImageResponse.mock.calls[0];
     expect(options.width).toBe(1284);
     expect(options.height).toBe(2778);
   });
 
   it('uses custom width and height', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({ width: '800', height: '1600' });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
-    const [, options] = ImageResponse.mock.calls[0];
+    expect(mockedImageResponse).toHaveBeenCalled();
+    const [, options] = mockedImageResponse.mock.calls[0];
     expect(options.width).toBe(800);
     expect(options.height).toBe(1600);
   });
 
   it('parses color parameters correctly', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({
       bg: 'FF0000',
@@ -72,58 +72,53 @@ describe('GET /api/wallpaper', () => {
     });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
+    expect(mockedImageResponse).toHaveBeenCalled();
   });
 
   it('handles showCustomText and customText parameters', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({ showCustomText: 'true', customText: 'Test text' });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
+    expect(mockedImageResponse).toHaveBeenCalled();
   });
 
   it('handles font parameter', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({ font: 'serif' });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
+    expect(mockedImageResponse).toHaveBeenCalled();
   });
 
   it('handles radius and spacing parameters', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({ radius: '16', spacing: '8' });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
+    expect(mockedImageResponse).toHaveBeenCalled();
   });
 
   it('handles textColor parameter', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest({ textColor: 'AABBCC' });
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
+    expect(mockedImageResponse).toHaveBeenCalled();
   });
 
   it('generates correct number of circles for 365/366 days', async () => {
-    const { ImageResponse } = require('next/og');
-    ImageResponse.mockClear();
+    mockedImageResponse.mockClear();
 
     const request = createRequest();
     await GET(request);
 
-    expect(ImageResponse).toHaveBeenCalled();
-    const [element] = ImageResponse.mock.calls[0];
+    expect(mockedImageResponse).toHaveBeenCalled();
+    const [element] = mockedImageResponse.mock.calls[0];
 
     // The element should contain multiple circle divs
     // We can't easily count them due to mocking, but verify structure exists

@@ -18,6 +18,8 @@ describe('Controls', () => {
     setSpacing: jest.fn(),
     textColor: DEFAULT_SETTINGS.textColor,
     setTextColor: jest.fn(),
+    accentColor: DEFAULT_SETTINGS.accentColor,
+    setAccentColor: jest.fn(),
     showCustomText: DEFAULT_SETTINGS.showCustomText,
     setShowCustomText: jest.fn(),
     customText: DEFAULT_SETTINGS.customText,
@@ -43,7 +45,7 @@ describe('Controls', () => {
     expect(screen.getByText('Theme Presets')).toBeInTheDocument();
     expect(screen.getByText('Minimal')).toBeInTheDocument();
     expect(screen.getByText('Neon')).toBeInTheDocument();
-    expect(screen.getByText('Pastel')).toBeInTheDocument();
+    expect(screen.getByText('Ocean')).toBeInTheDocument();
   });
 
   it('renders color pickers', () => {
@@ -148,6 +150,7 @@ describe('Controls', () => {
     expect(mockProps.setFilledColor).toHaveBeenCalledWith('#22c55e');
     expect(mockProps.setEmptyColor).toHaveBeenCalledWith('#1a1a1a');
     expect(mockProps.setTextColor).toHaveBeenCalledWith('#22c55e');
+    expect(mockProps.setAccentColor).toHaveBeenCalledWith('#4ade80');
   });
 
   it('always shows text color picker', () => {

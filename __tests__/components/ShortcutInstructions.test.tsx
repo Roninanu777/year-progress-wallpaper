@@ -55,7 +55,7 @@ describe('ShortcutInstructions', () => {
     expect(screen.getByText((_, element) => element?.textContent === 'Open the Shortcuts app on your iPhone')).toBeInTheDocument();
     expect(screen.getByText('Shortcuts')).toBeInTheDocument();
     expect(screen.getByText('Get Contents of URL')).toBeInTheDocument();
-    expect(screen.getByText('Set Wallpaper')).toBeInTheDocument();
+    expect(screen.getAllByText('Set Wallpaper').length).toBeGreaterThan(0);
   });
 
   it('shows daily automation section when expanded', () => {

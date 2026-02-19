@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Preview from '@/components/Preview';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
 
@@ -23,75 +23,41 @@ describe('Preview', () => {
     expect(screen.getByText(/1284 × 2778/)).toBeInTheDocument();
   });
 
-  it('shows loading spinner initially', () => {
+  it('renders wallpaper preview canvas', () => {
     render(<Preview {...defaultProps} />);
 
-    // Should have a spinning loader (animate-spin class)
-    const spinner = document.querySelector('.animate-spin');
-    expect(spinner).toBeInTheDocument();
+    const canvas = document.querySelector('canvas');
+    expect(canvas).toBeInTheDocument();
   });
 
-  it('renders wallpaper preview image', async () => {
-    render(<Preview {...defaultProps} />);
-
-    await waitFor(() => {
-      const img = screen.getByAltText('Wallpaper preview');
-      expect(img).toBeInTheDocument();
-    });
-  });
-
-  it('updates preview when props change', async () => {
+  it('re-renders canvas when props change', () => {
     const { rerender } = render(<Preview {...defaultProps} />);
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    expect(canvas).toBeInTheDocument();
 
-    await waitFor(() => {
-      const img = screen.getByAltText('Wallpaper preview');
-      expect(img).toBeInTheDocument();
-    });
-
-    const initialImg = screen.getByAltText('Wallpaper preview');
-    const initialSrc = initialImg.getAttribute('src');
-
-    // Change a prop
     rerender(<Preview {...defaultProps} bgColor="#FF0000" />);
-
-    await waitFor(() => {
-      const img = screen.getByAltText('Wallpaper preview');
-      expect(img.getAttribute('src')).not.toBe(initialSrc);
-    });
+    const updatedCanvas = document.querySelector('canvas');
+    expect(updatedCanvas).toBeInTheDocument();
   });
 
   it('renders within DeviceFrame', () => {
     const { container } = render(<Preview {...defaultProps} />);
 
-    // Check for DeviceFrame's rounded corners class
-    const frame = container.querySelector('.rounded-\\[3rem\\]');
+    const frame = container.querySelector('img[alt="iPhone frame"]');
     expect(frame).toBeInTheDocument();
   });
 
-  it('generates preview URL with correct parameters', async () => {
+  it('renders frame overlay image', () => {
     render(<Preview {...defaultProps} />);
 
-    await waitFor(() => {
-      const img = screen.getByAltText('Wallpaper preview');
-      const src = img.getAttribute('src');
-
-      expect(src).toContain('/api/wallpaper');
-      expect(src).toContain('bg=000000');
-      expect(src).toContain('filled=FFFFFF');
-      expect(src).toContain('empty=333333');
-    });
+    expect(screen.getByAltText('iPhone frame')).toBeInTheDocument();
   });
 
-  it('uses smaller dimensions for preview performance', async () => {
+  it('uses smaller dimensions for preview performance', () => {
     render(<Preview {...defaultProps} />);
+    const canvas = document.querySelector('canvas');
 
-    await waitFor(() => {
-      const img = screen.getByAltText('Wallpaper preview');
-      const src = img.getAttribute('src');
-
-      // Should use preview dimensions (400px width) not full device dimensions
-      expect(src).toContain('width=400');
-    });
+    expect(canvas).toHaveAttribute('width', '400');
   });
 
   it('displays different device info when device prop changes', () => {

@@ -99,7 +99,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                   5
                 </span>
                 <span>
-                  Add <strong>Set Wallpaper</strong> action (choose Lock Screen, Home Screen, or Both)
+                  Add <strong>Set Wallpaper</strong> action (choose Lock Screen, Home Screen, or Both) and turn <strong>Show Preview</strong> off
                 </span>
               </li>
               <li className="flex gap-3">
@@ -107,7 +107,7 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
                   6
                 </span>
                 <span>
-                  Name your shortcut (e.g., &quot;Update Year Progress&quot;)
+                  Name your shortcut (e.g., &quot;Update Year Progress&quot;) and run it once to grant permissions
                 </span>
               </li>
             </ol>
@@ -120,15 +120,15 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
               <li>1. Go to <strong>Automation</strong> tab in Shortcuts</li>
               <li>2. Tap <strong>+</strong> → <strong>Time of Day</strong></li>
               <li>3. Set time (e.g., 6:00 AM)</li>
-              <li>4. Choose <strong>Run Immediately</strong></li>
-              <li>5. Select your wallpaper shortcut</li>
+              <li>4. Add <strong>Run Shortcut</strong> and select your wallpaper shortcut</li>
+              <li>5. Choose <strong>Run Immediately</strong> and turn off <strong>Ask Before Running</strong></li>
             </ol>
           </div>
 
           {/* Pro tip */}
           <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-lg p-3">
             <p className="text-sm text-emerald-200">
-              <strong>Pro tip:</strong> The wallpaper automatically updates to show the current day when the shortcut runs. You don&apos;t need to manually change the URL!
+              <strong>Pro tip:</strong> With <strong>Set Wallpaper</strong> + <strong>Show Preview off</strong>, the wallpaper applies automatically when the shortcut runs, with no manual save needed.
             </p>
           </div>
         </div>

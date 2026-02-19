@@ -38,6 +38,7 @@ export default function DeviceFrame({ children, aspectRatio }: DeviceFrameProps)
             top: screenTop,
             width: screenWidth,
             height: screenHeight,
+            aspectRatio: `1 / ${aspectRatio}`,
             borderRadius: '38px',
           }}
         >
