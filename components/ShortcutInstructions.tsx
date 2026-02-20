@@ -58,6 +58,13 @@ export default function ShortcutInstructions({ apiUrl }: ShortcutInstructionsPro
             </div>
           </div>
 
+          {/* Required setting */}
+          <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-3">
+            <p className="text-sm text-red-200">
+              <strong>Required for full automation:</strong> In <strong>Set Wallpaper</strong>, turn <strong>Show Preview</strong> off.
+            </p>
+          </div>
+
           {/* Instructions */}
           <div className="space-y-3">
             <h4 className="font-medium text-white">Setup Instructions:</h4>
