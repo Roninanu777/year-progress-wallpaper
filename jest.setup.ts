@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 
 if (typeof HTMLCanvasElement !== 'undefined') {
+  const noop = () => undefined;
+
   Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
     value: () => ({
       fillStyle: '#000000',
@@ -9,15 +11,15 @@ if (typeof HTMLCanvasElement !== 'undefined') {
       font: '',
       textAlign: 'left',
       textBaseline: 'alphabetic',
-      fillRect: jest.fn(),
-      beginPath: jest.fn(),
-      arc: jest.fn(),
-      fill: jest.fn(),
-      stroke: jest.fn(),
-      fillText: jest.fn(),
-      moveTo: jest.fn(),
-      lineTo: jest.fn(),
-      measureText: jest.fn(() => ({ width: 100 })),
+      fillRect: noop,
+      beginPath: noop,
+      arc: noop,
+      fill: noop,
+      stroke: noop,
+      fillText: noop,
+      moveTo: noop,
+      lineTo: noop,
+      measureText: () => ({ width: 100 }),
     }),
   });
 }
