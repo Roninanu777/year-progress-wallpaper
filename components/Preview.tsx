@@ -2,7 +2,7 @@
 
 import DeviceFrame from './DeviceFrame';
 import WallpaperCanvas from './WallpaperCanvas';
-import { DEVICE_PRESETS, DevicePresetKey } from '@/lib/constants';
+import { DEVICE_PRESETS, DevicePresetKey, MonthStyleKey } from '@/lib/constants';
 
 interface PreviewProps {
   device: DevicePresetKey;
@@ -17,6 +17,7 @@ interface PreviewProps {
   customText: string;
   font: string;
   mode?: 'year' | 'month';
+  monthStyle?: MonthStyleKey;
 }
 
 export default function Preview({
@@ -32,6 +33,7 @@ export default function Preview({
   customText,
   font,
   mode = 'year',
+  monthStyle = 'glass',
 }: PreviewProps) {
   const deviceConfig = DEVICE_PRESETS[device];
   const aspectRatio = deviceConfig.height / deviceConfig.width;
@@ -61,6 +63,7 @@ export default function Preview({
           customText={customText}
           font={font}
           mode={mode}
+          monthStyle={monthStyle}
         />
       </DeviceFrame>
 

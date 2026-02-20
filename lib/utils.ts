@@ -118,6 +118,7 @@ export function generateApiUrl(
     showCustomText: boolean;
     customText: string;
     font: string;
+    monthStyle?: string;
   },
   mode: 'year' | 'month' = 'year'
 ): string {
@@ -134,6 +135,7 @@ export function generateApiUrl(
     showCustomText: settings.showCustomText.toString(),
     customText: settings.customText,
     font: settings.font,
+    monthStyle: settings.monthStyle || 'glass',
   });
 
   const endpoint = mode === 'month' ? '/api/wallpaper/month' : '/api/wallpaper';

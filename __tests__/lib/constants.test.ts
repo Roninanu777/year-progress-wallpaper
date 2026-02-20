@@ -4,6 +4,7 @@ import {
   PRESET_THEMES,
   GRID_CONFIG,
   FONT_OPTIONS,
+  MONTH_STYLES,
 } from '@/lib/constants';
 
 describe('DEVICE_PRESETS', () => {
@@ -46,6 +47,7 @@ describe('DEFAULT_SETTINGS', () => {
     expect(DEFAULT_SETTINGS).toHaveProperty('showCustomText');
     expect(DEFAULT_SETTINGS).toHaveProperty('customText');
     expect(DEFAULT_SETTINGS).toHaveProperty('font');
+    expect(DEFAULT_SETTINGS).toHaveProperty('monthStyle');
   });
 
   it('has valid default device', () => {
@@ -75,6 +77,10 @@ describe('DEFAULT_SETTINGS', () => {
 
   it('has valid font', () => {
     expect(FONT_OPTIONS).toHaveProperty(DEFAULT_SETTINGS.font);
+  });
+
+  it('has valid default month style', () => {
+    expect(MONTH_STYLES).toHaveProperty(DEFAULT_SETTINGS.monthStyle);
   });
 });
 
@@ -142,5 +148,13 @@ describe('FONT_OPTIONS', () => {
     expect(FONT_OPTIONS['Inter']).toBe('Inter');
     expect(FONT_OPTIONS['Lora']).toBe('Lora');
     expect(FONT_OPTIONS['sans-serif']).toBe('Sans Serif');
+  });
+});
+
+describe('MONTH_STYLES', () => {
+  it('contains expected style keys', () => {
+    expect(MONTH_STYLES).toHaveProperty('glass');
+    expect(MONTH_STYLES).toHaveProperty('classic');
+    expect(MONTH_STYLES).toHaveProperty('bold');
   });
 });

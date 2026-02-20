@@ -1,7 +1,7 @@
 'use client';
 
 import ColorPicker from './ColorPicker';
-import { DEVICE_PRESETS, DevicePresetKey, PRESET_THEMES, ThemeKey, FONT_OPTIONS, FontKey } from '@/lib/constants';
+import { DEVICE_PRESETS, DevicePresetKey, PRESET_THEMES, ThemeKey, FONT_OPTIONS, FontKey, MONTH_STYLES, MonthStyleKey } from '@/lib/constants';
 import { generateApiUrl } from '@/lib/utils';
 
 interface ControlsProps {
@@ -27,6 +27,8 @@ interface ControlsProps {
   setCustomText: (text: string) => void;
   font: FontKey;
   setFont: (font: FontKey) => void;
+  monthStyle: MonthStyleKey;
+  setMonthStyle: (style: MonthStyleKey) => void;
   mode?: 'year' | 'month';
 }
 
@@ -53,6 +55,8 @@ export default function Controls({
   setCustomText,
   font,
   setFont,
+  monthStyle,
+  setMonthStyle,
   mode = 'year',
 }: ControlsProps) {
   const deviceConfig = DEVICE_PRESETS[device];
@@ -71,6 +75,7 @@ export default function Controls({
       showCustomText,
       customText,
       font,
+      monthStyle,
     }, mode);
 
     try {
@@ -105,6 +110,7 @@ export default function Controls({
       showCustomText,
       customText,
       font,
+      monthStyle,
     }, mode);
 
     navigator.clipboard.writeText(url);
@@ -137,6 +143,24 @@ export default function Controls({
           ))}
         </select>
       </section>
+
+      {/* Month Style Selection */}
+      {mode === 'month' && (
+        <section>
+          <h3 className="text-sm font-medium uppercase tracking-wider text-zinc-400 mb-4">Calendar Style</h3>
+          <select
+            value={monthStyle}
+            onChange={(e) => setMonthStyle(e.target.value as MonthStyleKey)}
+            className="w-full bg-zinc-800 text-white rounded-xl px-4 py-3 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-200"
+          >
+            {Object.entries(MONTH_STYLES).map(([key, name]) => (
+              <option key={key} value={key}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </section>
+      )}
 
       {/* Theme Presets */}
       <section>

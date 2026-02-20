@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Preview from '@/components/Preview';
 import Controls from '@/components/Controls';
 import ShortcutInstructions from '@/components/ShortcutInstructions';
-import { DEFAULT_SETTINGS, DEVICE_PRESETS, DevicePresetKey, FontKey } from '@/lib/constants';
+import { DEFAULT_SETTINGS, DEVICE_PRESETS, DevicePresetKey, FontKey, MonthStyleKey } from '@/lib/constants';
 import { generateApiUrl, getDayOfYear, getDaysRemaining, getYearProgress, getDayOfMonth, getMonthDaysRemaining, getMonthProgress, getMonthName } from '@/lib/utils';
 
 export default function Home() {
@@ -19,6 +19,7 @@ export default function Home() {
   const [showCustomText, setShowCustomText] = useState(DEFAULT_SETTINGS.showCustomText);
   const [customText, setCustomText] = useState(DEFAULT_SETTINGS.customText);
   const [font, setFont] = useState<FontKey>(DEFAULT_SETTINGS.font);
+  const [monthStyle, setMonthStyle] = useState<MonthStyleKey>(DEFAULT_SETTINGS.monthStyle);
   const [mode, setMode] = useState<'year' | 'month'>('year');
 
   const deviceConfig = DEVICE_PRESETS[device];
@@ -38,8 +39,9 @@ export default function Home() {
       showCustomText,
       customText,
       font,
+      monthStyle,
     }, mode);
-  }, [bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, deviceConfig, mode]);
+  }, [bgColor, filledColor, emptyColor, radius, spacing, textColor, accentColor, showCustomText, customText, font, monthStyle, deviceConfig, mode]);
 
   const dayOfYear = getDayOfYear();
   const daysRemaining = getDaysRemaining();
@@ -128,6 +130,7 @@ export default function Home() {
                 customText={customText}
                 font={font}
                 mode={mode}
+                monthStyle={monthStyle}
               />
             </div>
           </div>
@@ -161,6 +164,8 @@ export default function Home() {
               font={font}
               setFont={setFont}
               mode={mode}
+              monthStyle={monthStyle}
+              setMonthStyle={setMonthStyle}
             />
 
             {/* iOS Shortcut Instructions */}

@@ -26,6 +26,8 @@ describe('Controls', () => {
     setCustomText: jest.fn(),
     font: DEFAULT_SETTINGS.font,
     setFont: jest.fn(),
+    monthStyle: DEFAULT_SETTINGS.monthStyle,
+    setMonthStyle: jest.fn(),
   };
 
   beforeEach(() => {
@@ -194,5 +196,21 @@ describe('Controls', () => {
     render(<Controls {...mockProps} spacing={8} />);
 
     expect(screen.getByText('Spacing: 8px')).toBeInTheDocument();
+  });
+
+  it('shows month style selector in month mode', () => {
+    render(<Controls {...mockProps} mode="month" />);
+
+    expect(screen.getByText('Calendar Style')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Glass Card')).toBeInTheDocument();
+  });
+
+  it('calls setMonthStyle when month style changes', () => {
+    render(<Controls {...mockProps} mode="month" />);
+
+    const monthStyleSelect = screen.getAllByRole('combobox')[1];
+    fireEvent.change(monthStyleSelect, { target: { value: 'bold' } });
+
+    expect(mockProps.setMonthStyle).toHaveBeenCalledWith('bold');
   });
 });

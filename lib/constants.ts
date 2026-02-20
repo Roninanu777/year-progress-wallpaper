@@ -24,6 +24,14 @@ export const FONT_OPTIONS = {
 
 export type FontKey = keyof typeof FONT_OPTIONS;
 
+export const MONTH_STYLES = {
+  glass: 'Glass Card',
+  classic: 'Classic Grid',
+  bold: 'Bold Blocks',
+} as const;
+
+export type MonthStyleKey = keyof typeof MONTH_STYLES;
+
 export const DEFAULT_SETTINGS = {
   device: 'iphone-17' as DevicePresetKey,
   bgColor: '#000000',
@@ -36,6 +44,7 @@ export const DEFAULT_SETTINGS = {
   showCustomText: false,
   customText: '',
   font: 'Lora' as FontKey,
+  monthStyle: 'glass' as MonthStyleKey,
 };
 
 export const PRESET_THEMES = {
