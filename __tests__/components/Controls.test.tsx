@@ -203,6 +203,8 @@ describe('Controls', () => {
 
     expect(screen.getByText('Calendar Style')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Glass Card')).toBeInTheDocument();
+    expect(screen.getByText('Minimal Outline')).toBeInTheDocument();
+    expect(screen.getByText('Capsule Modern')).toBeInTheDocument();
   });
 
   it('calls setMonthStyle when month style changes', () => {

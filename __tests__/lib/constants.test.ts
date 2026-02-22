@@ -156,5 +156,7 @@ describe('MONTH_STYLES', () => {
     expect(MONTH_STYLES).toHaveProperty('glass');
     expect(MONTH_STYLES).toHaveProperty('classic');
     expect(MONTH_STYLES).toHaveProperty('bold');
+    expect(MONTH_STYLES).toHaveProperty('minimal');
+    expect(MONTH_STYLES).toHaveProperty('capsule');
   });
 });

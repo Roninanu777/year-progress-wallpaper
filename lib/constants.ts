@@ -28,6 +28,8 @@ export const MONTH_STYLES = {
   glass: 'Glass Card',
   classic: 'Classic Grid',
   bold: 'Bold Blocks',
+  minimal: 'Minimal Outline',
+  capsule: 'Capsule Modern',
 } as const;
 
 export type MonthStyleKey = keyof typeof MONTH_STYLES;

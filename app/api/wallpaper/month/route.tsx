@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 const DAY_NAMES = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const DAY_NAMES_LONG = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTH_STYLE_KEYS = ['glass', 'classic', 'bold'] as const;
+const MONTH_STYLE_KEYS = ['glass', 'classic', 'bold', 'minimal', 'capsule'] as const;
 type MonthStyleKey = (typeof MONTH_STYLE_KEYS)[number];
 
 function hexToRgba(hex: string, alpha: number): string {
@@ -539,6 +539,448 @@ function renderBoldMonthImage({
   );
 }
 
+function renderMinimalMonthImage({
+  width,
+  height,
+  bgColor,
+  textColor,
+  showCustomText,
+  customText,
+  font,
+  accentColor,
+  istDate,
+}: MonthRouteParams): ImageResponse {
+  const totalDays = getDaysInMonth(istDate);
+  const dayOfMonth = getDayOfMonth(istDate);
+  const firstDayOffset = getFirstDayOfMonth(istDate);
+  const monthName = istDate.toLocaleString('en-US', { month: 'long' });
+  const year = istDate.getFullYear();
+
+  const columns = 7;
+  const rows = Math.ceil((totalDays + firstDayOffset) / columns);
+  const blockWidth = Math.round(width * 0.82);
+  const blockPadding = Math.max(12, Math.floor(width / 50));
+  const cellSize = Math.floor((blockWidth - blockPadding * 2) / columns);
+  const gridWidth = columns * cellSize;
+  const gridHeight = rows * cellSize;
+  const blockHeight = Math.round(gridHeight + cellSize * 2.35);
+
+  const blockX = (width - blockWidth) / 2;
+  const blockY = (height - blockHeight) / 2 + height * 0.05;
+  const titleY = blockY + cellSize * 0.56;
+  const headerY = blockY + cellSize * 1.32;
+  const gridStartY = headerY + cellSize * 0.45;
+  const gridStartX = blockX + (blockWidth - gridWidth) / 2;
+  const subtitleY = gridStartY + gridHeight + Math.max(18, Math.floor(width / 56));
+
+  const cells = [];
+  for (let i = 0; i < rows * columns; i++) {
+    const col = i % columns;
+    const row = Math.floor(i / columns);
+    const dayNumber = i - firstDayOffset + 1;
+    const isValidDay = dayNumber >= 1 && dayNumber <= totalDays;
+    if (!isValidDay) continue;
+
+    const isPassed = dayNumber < dayOfMonth;
+    const isCurrentDay = dayNumber === dayOfMonth;
+    const x = gridStartX + col * cellSize + cellSize / 2;
+    const y = gridStartY + row * cellSize + cellSize / 2;
+
+    cells.push(
+      <div
+        key={`cell-${dayNumber}`}
+        style={{
+          position: 'absolute',
+          left: x - cellSize * 0.34,
+          top: y - cellSize * 0.34,
+          width: cellSize * 0.68,
+          height: cellSize * 0.68,
+          borderRadius: cellSize * 0.2,
+          backgroundColor: isCurrentDay ? hexToRgba(accentColor, 0.2) : 'transparent',
+          border: '1px solid transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontSize: Math.max(20, Math.floor(width / 40)),
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: isCurrentDay ? 700 : isPassed ? 500 : 400,
+            color: isCurrentDay ? textColor : isPassed ? hexToRgba(textColor, 0.85) : hexToRgba(textColor, 0.38),
+          }}
+        >
+          {dayNumber}
+        </span>
+        {isCurrentDay && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: cellSize * 0.08,
+              left: '25%',
+              width: '50%',
+              height: Math.max(2, Math.floor(width / 420)),
+              borderRadius: 999,
+              backgroundColor: accentColor,
+            }}
+          />
+        )}
+      </div>
+    );
+  }
+
+  const daysLeft = totalDays - dayOfMonth;
+  const percentText = ((dayOfMonth / totalDays) * 100).toFixed(1);
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: bgColor,
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: blockX,
+            top: blockY,
+            width: blockWidth,
+            height: blockHeight,
+            borderRadius: Math.max(16, Math.floor(width / 60)),
+            backgroundColor: hexToRgba(textColor, 0.04),
+            border: `1px solid ${hexToRgba(textColor, 0.14)}`,
+          }}
+        />
+
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: titleY - Math.max(24, Math.floor(width / 28)) / 2,
+            width,
+            height: Math.max(24, Math.floor(width / 28)),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: Math.max(24, Math.floor(width / 28)),
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 500,
+            color: textColor,
+          }}
+        >
+          {monthName} {year}
+        </div>
+
+        {DAY_NAMES.map((day, i) => {
+          const x = gridStartX + i * cellSize + cellSize / 2;
+          const isWeekend = i === 0 || i === 6;
+          return (
+            <div
+              key={`header-${i}`}
+              style={{
+                position: 'absolute',
+                left: x - 20,
+                top: headerY - Math.max(12, Math.floor(width / 78)) / 2,
+                width: 40,
+                height: Math.max(12, Math.floor(width / 78)),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: Math.max(12, Math.floor(width / 78)),
+                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+                fontWeight: 600,
+                color: isWeekend ? hexToRgba(accentColor, 0.86) : hexToRgba(textColor, 0.6),
+              }}
+            >
+              {day}
+            </div>
+          );
+        })}
+
+        <div
+          style={{
+            position: 'absolute',
+            left: gridStartX,
+            top: gridStartY - cellSize * 0.26,
+            width: gridWidth,
+            height: 1,
+            backgroundColor: hexToRgba(textColor, 0.12),
+          }}
+        />
+
+        {cells}
+
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: subtitleY - Math.max(18, Math.floor(width / 46)) / 2,
+            width,
+            height: Math.max(18, Math.floor(width / 46)),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: Math.max(18, Math.floor(width / 46)),
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 500,
+            letterSpacing: '0.02em',
+          }}
+        >
+          <span style={{ color: accentColor }}>{daysLeft}d left</span>
+          <span style={{ color: hexToRgba(textColor, 0.72), marginLeft: 14, marginRight: 14 }}>•</span>
+          <span style={{ color: textColor }}>{percentText}%</span>
+        </div>
+
+        {showCustomText && customText && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: height * 0.08,
+              left: 0,
+              right: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: textColor,
+              fontSize: Math.max(32, Math.floor(width / 22)),
+              fontFamily: font || 'serif',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              letterSpacing: '0.01em',
+            }}
+          >
+            {customText}
+          </div>
+        )}
+      </div>
+    ),
+    { width, height }
+  );
+}
+
+function renderCapsuleMonthImage({
+  width,
+  height,
+  bgColor,
+  filledColor,
+  emptyColor,
+  textColor,
+  showCustomText,
+  customText,
+  font,
+  highlightColor,
+  accentColor,
+  istDate,
+}: MonthRouteParams): ImageResponse {
+  const totalDays = getDaysInMonth(istDate);
+  const dayOfMonth = getDayOfMonth(istDate);
+  const firstDayOffset = getFirstDayOfMonth(istDate);
+  const monthName = getMonthNameShort(istDate);
+  const year = istDate.getFullYear();
+
+  const columns = 7;
+  const rows = Math.ceil((totalDays + firstDayOffset) / columns);
+  const shellWidth = Math.round(width * 0.88);
+  const shellPaddingX = Math.max(14, Math.floor(width / 46));
+  const shellPaddingY = Math.max(16, Math.floor(width / 52));
+  const gap = Math.max(5, Math.floor(width / 170));
+  const cellSize = Math.floor((shellWidth - shellPaddingX * 2 - gap * (columns - 1)) / columns);
+  const gridWidth = columns * cellSize + gap * (columns - 1);
+  const gridHeight = rows * cellSize + gap * (rows - 1);
+  const shellHeight = shellPaddingY * 2 + gridHeight + cellSize * 1.95;
+
+  const shellX = (width - shellWidth) / 2;
+  const shellY = (height - shellHeight) / 2 + height * 0.055;
+  const gridStartX = shellX + (shellWidth - gridWidth) / 2;
+  const titleY = shellY + shellPaddingY + Math.max(14, Math.floor(width / 68));
+  const headerY = titleY + Math.max(34, Math.floor(width / 32));
+  const gridStartY = headerY + Math.max(18, Math.floor(width / 62));
+  const subtitleY = gridStartY + gridHeight + Math.max(22, Math.floor(width / 54));
+
+  const cells = [];
+  for (let i = 0; i < rows * columns; i++) {
+    const col = i % columns;
+    const row = Math.floor(i / columns);
+    const dayNumber = i - firstDayOffset + 1;
+    const isValidDay = dayNumber >= 1 && dayNumber <= totalDays;
+    if (!isValidDay) continue;
+
+    const isPassed = dayNumber < dayOfMonth;
+    const isCurrentDay = dayNumber === dayOfMonth;
+    const x = gridStartX + col * (cellSize + gap);
+    const y = gridStartY + row * (cellSize + gap);
+
+    let background = hexToRgba(emptyColor, 0.2);
+    let color = hexToRgba(textColor, 0.62);
+    let border = `1px solid ${hexToRgba(textColor, 0.1)}`;
+    let shadow = 'none';
+
+    if (isPassed) {
+      background = hexToRgba(filledColor, 0.22);
+      color = filledColor;
+    }
+    if (isCurrentDay) {
+      background = `linear-gradient(135deg, ${highlightColor} 0%, ${accentColor} 100%)`;
+      color = bgColor;
+      border = `2px solid ${hexToRgba(highlightColor, 0.8)}`;
+      shadow = `0 0 ${Math.max(10, Math.floor(width / 64))}px ${hexToRgba(highlightColor, 0.4)}`;
+    }
+
+    cells.push(
+      <div
+        key={`cell-${dayNumber}`}
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+          width: cellSize,
+          height: cellSize,
+          borderRadius: Math.max(10, Math.floor(cellSize * 0.46)),
+          background,
+          border,
+          boxShadow: shadow,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: Math.max(18, Math.floor(width / 42)),
+          fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+          fontWeight: isCurrentDay ? 800 : isPassed ? 600 : 500,
+          color,
+        }}
+      >
+        {dayNumber}
+      </div>
+    );
+  }
+
+  const percentText = ((dayOfMonth / totalDays) * 100).toFixed(1);
+  const daysLeft = totalDays - dayOfMonth;
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: bgColor,
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: shellX,
+            top: shellY,
+            width: shellWidth,
+            height: shellHeight,
+            borderRadius: Math.max(20, Math.floor(width / 44)),
+            background: `linear-gradient(135deg, ${hexToRgba(accentColor, 0.12)} 0%, ${hexToRgba(textColor, 0.05)} 100%)`,
+            border: `${Math.max(1.5, Math.floor(width / 520))}px solid ${hexToRgba(accentColor, 0.32)}`,
+          }}
+        />
+
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: titleY - Math.max(24, Math.floor(width / 30)) / 2,
+            width,
+            height: Math.max(24, Math.floor(width / 30)),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: Math.max(24, Math.floor(width / 30)),
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 700,
+            color: filledColor,
+          }}
+        >
+          {monthName} {year}
+        </div>
+
+        {DAY_NAMES.map((day, i) => {
+          const x = gridStartX + i * (cellSize + gap) + cellSize / 2;
+          const isWeekend = i === 0 || i === 6;
+          return (
+            <div
+              key={`header-${i}`}
+              style={{
+                position: 'absolute',
+                left: x - 20,
+                top: headerY - Math.max(12, Math.floor(width / 76)) / 2,
+                width: 40,
+                height: Math.max(12, Math.floor(width / 76)),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: Math.max(12, Math.floor(width / 76)),
+                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+                fontWeight: 600,
+                color: isWeekend ? accentColor : hexToRgba(textColor, 0.66),
+              }}
+            >
+              {day}
+            </div>
+          );
+        })}
+
+        {cells}
+
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: subtitleY - Math.max(19, Math.floor(width / 44)) / 2,
+            width,
+            height: Math.max(19, Math.floor(width / 44)),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: Math.max(19, Math.floor(width / 44)),
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 600,
+            color: textColor,
+            letterSpacing: '0.02em',
+          }}
+        >
+          {daysLeft}d left  •  {percentText}%
+        </div>
+
+        {showCustomText && customText && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: height * 0.08,
+              left: 0,
+              right: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: textColor,
+              fontSize: Math.max(32, Math.floor(width / 22)),
+              fontFamily: font || 'serif',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              letterSpacing: '0.01em',
+            }}
+          >
+            {customText}
+          </div>
+        )}
+      </div>
+    ),
+    { width, height }
+  );
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
@@ -580,6 +1022,40 @@ export async function GET(request: NextRequest) {
 
   if (monthStyle === 'bold') {
     return renderBoldMonthImage({
+      width,
+      height,
+      bgColor,
+      filledColor,
+      emptyColor,
+      textColor,
+      showCustomText,
+      customText,
+      font,
+      highlightColor,
+      accentColor,
+      istDate,
+    });
+  }
+
+  if (monthStyle === 'minimal') {
+    return renderMinimalMonthImage({
+      width,
+      height,
+      bgColor,
+      filledColor,
+      emptyColor,
+      textColor,
+      showCustomText,
+      customText,
+      font,
+      highlightColor,
+      accentColor,
+      istDate,
+    });
+  }
+
+  if (monthStyle === 'capsule') {
+    return renderCapsuleMonthImage({
       width,
       height,
       bgColor,

@@ -209,6 +209,16 @@ export default function WallpaperCanvas({
         return;
       }
 
+      if (selectedMonthStyle === 'minimal') {
+        drawMonthViewMinimal(ctx, istDate);
+        return;
+      }
+
+      if (selectedMonthStyle === 'capsule') {
+        drawMonthViewCapsule(ctx, istDate);
+        return;
+      }
+
       drawMonthViewGlass(ctx, istDate);
     }
 
@@ -680,6 +690,234 @@ export default function WallpaperCanvas({
       if (showCustomText && customText) {
         ctx.fillStyle = textColor;
         ctx.font = `italic 400 ${customTextFontSize}px ${font}, serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(customText, width / 2, height - height * 0.08);
+      }
+    }
+
+    function drawMonthViewMinimal(ctx: CanvasRenderingContext2D, istDate: Date) {
+      const totalDays = getDaysInMonth(istDate);
+      const dayOfMonth = getDayOfMonth(istDate);
+      const firstDayOffset = getFirstDayOfMonth(istDate);
+      const monthName = istDate.toLocaleString('en-US', { month: 'long' });
+      const year = istDate.getFullYear();
+
+      const columns = 7;
+      const rows = Math.ceil((totalDays + firstDayOffset) / columns);
+      const blockWidth = Math.round(width * 0.82);
+      const blockPadding = Math.max(12, Math.floor(width / 50));
+      const cellSize = Math.floor((blockWidth - blockPadding * 2) / columns);
+      const gridWidth = columns * cellSize;
+      const gridHeight = rows * cellSize;
+      const blockHeight = Math.round(gridHeight + cellSize * 2.35);
+
+      const blockX = (width - blockWidth) / 2;
+      const blockY = (height - blockHeight) / 2 + height * 0.05;
+      const titleY = blockY + cellSize * 0.56;
+      const headerY = blockY + cellSize * 1.32;
+      const gridStartY = headerY + cellSize * 0.45;
+      const gridStartX = blockX + (blockWidth - gridWidth) / 2;
+      const subtitleY = gridStartY + gridHeight + Math.max(18, Math.floor(width / 56));
+
+      roundedRectPath(ctx, blockX, blockY, blockWidth, blockHeight, Math.max(16, Math.floor(width / 60)));
+      ctx.fillStyle = hexToRgba(textColor, 0.04);
+      ctx.fill();
+      roundedRectPath(ctx, blockX, blockY, blockWidth, blockHeight, Math.max(16, Math.floor(width / 60)));
+      ctx.strokeStyle = hexToRgba(textColor, 0.14);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.font = `500 ${Math.max(24, Math.floor(width / 28))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = textColor;
+      ctx.fillText(`${monthName} ${year}`, width / 2, titleY);
+
+      ctx.font = `600 ${Math.max(12, Math.floor(width / 78))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      for (let i = 0; i < DAY_NAMES.length; i++) {
+        const x = gridStartX + i * cellSize + cellSize / 2;
+        const isWeekend = i === 0 || i === 6;
+        ctx.fillStyle = isWeekend ? hexToRgba(accentColor, 0.86) : hexToRgba(textColor, 0.6);
+        ctx.fillText(DAY_NAMES[i], x, headerY);
+      }
+
+      ctx.strokeStyle = hexToRgba(textColor, 0.12);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(gridStartX, gridStartY - cellSize * 0.26);
+      ctx.lineTo(gridStartX + gridWidth, gridStartY - cellSize * 0.26);
+      ctx.stroke();
+
+      for (let i = 0; i < rows * columns; i++) {
+        const col = i % columns;
+        const row = Math.floor(i / columns);
+        const dayNumber = i - firstDayOffset + 1;
+        const isValidDay = dayNumber >= 1 && dayNumber <= totalDays;
+        if (!isValidDay) continue;
+
+        const x = gridStartX + col * cellSize + cellSize / 2;
+        const y = gridStartY + row * cellSize + cellSize / 2;
+        const isPassed = dayNumber < dayOfMonth;
+        const isCurrentDay = dayNumber === dayOfMonth;
+
+        if (isCurrentDay) {
+          roundedRectPath(
+            ctx,
+            x - cellSize * 0.34,
+            y - cellSize * 0.34,
+            cellSize * 0.68,
+            cellSize * 0.68,
+            cellSize * 0.2
+          );
+          ctx.fillStyle = hexToRgba(accentColor, 0.2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(x - cellSize * 0.22, y + cellSize * 0.26);
+          ctx.lineTo(x + cellSize * 0.22, y + cellSize * 0.26);
+          ctx.strokeStyle = accentColor;
+          ctx.lineWidth = Math.max(2, Math.floor(width / 420));
+          ctx.stroke();
+        }
+
+        ctx.font = `${isCurrentDay ? '700' : isPassed ? '500' : '400'} ${Math.max(20, Math.floor(width / 40))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        if (isCurrentDay) {
+          ctx.fillStyle = textColor;
+        } else if (isPassed) {
+          ctx.fillStyle = hexToRgba(textColor, 0.85);
+        } else {
+          ctx.fillStyle = hexToRgba(textColor, 0.38);
+        }
+        ctx.fillText(String(dayNumber), x, y);
+      }
+
+      const daysLeft = totalDays - dayOfMonth;
+      const percentText = ((dayOfMonth / totalDays) * 100).toFixed(1);
+      ctx.font = `500 ${Math.max(18, Math.floor(width / 46))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = accentColor;
+      ctx.fillText(`${daysLeft}d left`, width / 2 - Math.max(34, Math.floor(width / 32)), subtitleY);
+      ctx.fillStyle = hexToRgba(textColor, 0.72);
+      ctx.fillText(`• ${percentText}%`, width / 2 + Math.max(42, Math.floor(width / 30)), subtitleY);
+
+      if (showCustomText && customText) {
+        ctx.fillStyle = textColor;
+        ctx.font = `italic 400 ${Math.max(32, Math.floor(width / 22))}px ${font}, serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(customText, width / 2, height - height * 0.08);
+      }
+    }
+
+    function drawMonthViewCapsule(ctx: CanvasRenderingContext2D, istDate: Date) {
+      const totalDays = getDaysInMonth(istDate);
+      const dayOfMonth = getDayOfMonth(istDate);
+      const firstDayOffset = getFirstDayOfMonth(istDate);
+      const monthName = istDate.toLocaleString('en-US', { month: 'short' });
+      const year = istDate.getFullYear();
+
+      const columns = 7;
+      const rows = Math.ceil((totalDays + firstDayOffset) / columns);
+      const shellWidth = Math.round(width * 0.88);
+      const shellPaddingX = Math.max(14, Math.floor(width / 46));
+      const shellPaddingY = Math.max(16, Math.floor(width / 52));
+      const gap = Math.max(5, Math.floor(width / 170));
+      const cellSize = Math.floor((shellWidth - shellPaddingX * 2 - gap * (columns - 1)) / columns);
+      const gridWidth = columns * cellSize + gap * (columns - 1);
+      const gridHeight = rows * cellSize + gap * (rows - 1);
+      const shellHeight = shellPaddingY * 2 + gridHeight + cellSize * 1.95;
+
+      const shellX = (width - shellWidth) / 2;
+      const shellY = (height - shellHeight) / 2 + height * 0.055;
+      const gridStartX = shellX + (shellWidth - gridWidth) / 2;
+      const titleY = shellY + shellPaddingY + Math.max(14, Math.floor(width / 68));
+      const headerY = titleY + Math.max(34, Math.floor(width / 32));
+      const gridStartY = headerY + Math.max(18, Math.floor(width / 62));
+      const subtitleY = gridStartY + gridHeight + Math.max(22, Math.floor(width / 54));
+
+      const shellGradient = ctx.createLinearGradient(shellX, shellY, shellX + shellWidth, shellY + shellHeight);
+      shellGradient.addColorStop(0, hexToRgba(accentColor, 0.12));
+      shellGradient.addColorStop(1, hexToRgba(textColor, 0.05));
+
+      roundedRectPath(ctx, shellX, shellY, shellWidth, shellHeight, Math.max(20, Math.floor(width / 44)));
+      ctx.fillStyle = shellGradient;
+      ctx.fill();
+      roundedRectPath(ctx, shellX, shellY, shellWidth, shellHeight, Math.max(20, Math.floor(width / 44)));
+      ctx.strokeStyle = hexToRgba(accentColor, 0.32);
+      ctx.lineWidth = Math.max(1.5, Math.floor(width / 520));
+      ctx.stroke();
+
+      ctx.font = `700 ${Math.max(24, Math.floor(width / 30))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = filledColor;
+      ctx.fillText(`${monthName} ${year}`, width / 2, titleY);
+
+      ctx.font = `600 ${Math.max(12, Math.floor(width / 76))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      for (let i = 0; i < DAY_NAMES.length; i++) {
+        const x = gridStartX + i * (cellSize + gap) + cellSize / 2;
+        const isWeekend = i === 0 || i === 6;
+        ctx.fillStyle = isWeekend ? accentColor : hexToRgba(textColor, 0.66);
+        ctx.fillText(DAY_NAMES[i], x, headerY);
+      }
+
+      for (let i = 0; i < rows * columns; i++) {
+        const col = i % columns;
+        const row = Math.floor(i / columns);
+        const dayNumber = i - firstDayOffset + 1;
+        const isValidDay = dayNumber >= 1 && dayNumber <= totalDays;
+        const x = gridStartX + col * (cellSize + gap);
+        const y = gridStartY + row * (cellSize + gap);
+        if (!isValidDay) continue;
+
+        const isPassed = dayNumber < dayOfMonth;
+        const isCurrentDay = dayNumber === dayOfMonth;
+        const capsuleRadius = Math.max(10, Math.floor(cellSize * 0.46));
+
+        roundedRectPath(ctx, x, y, cellSize, cellSize, capsuleRadius);
+        if (isCurrentDay) {
+          const currentGrad = ctx.createLinearGradient(x, y, x + cellSize, y + cellSize);
+          currentGrad.addColorStop(0, highlightColor);
+          currentGrad.addColorStop(1, accentColor);
+          ctx.fillStyle = currentGrad;
+          ctx.shadowColor = hexToRgba(highlightColor, 0.4);
+          ctx.shadowBlur = Math.max(10, Math.floor(width / 64));
+        } else if (isPassed) {
+          ctx.fillStyle = hexToRgba(filledColor, 0.22);
+        } else {
+          ctx.fillStyle = hexToRgba(emptyColor, 0.2);
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        roundedRectPath(ctx, x, y, cellSize, cellSize, capsuleRadius);
+        ctx.strokeStyle = isCurrentDay ? hexToRgba(highlightColor, 0.8) : hexToRgba(textColor, 0.1);
+        ctx.lineWidth = isCurrentDay ? 1.6 : 1;
+        ctx.stroke();
+
+        ctx.font = `${isCurrentDay ? '800' : isPassed ? '600' : '500'} ${Math.max(18, Math.floor(width / 42))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = isCurrentDay ? bgColor : isPassed ? filledColor : hexToRgba(textColor, 0.62);
+        ctx.fillText(String(dayNumber), x + cellSize / 2, y + cellSize / 2);
+      }
+
+      const percentText = ((dayOfMonth / totalDays) * 100).toFixed(1);
+      const daysLeft = totalDays - dayOfMonth;
+      const statsText = `${daysLeft}d left  •  ${percentText}%`;
+      ctx.font = `600 ${Math.max(19, Math.floor(width / 44))}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = textColor;
+      ctx.fillText(statsText, width / 2, subtitleY);
+
+      if (showCustomText && customText) {
+        ctx.fillStyle = textColor;
+        ctx.font = `italic 400 ${Math.max(32, Math.floor(width / 22))}px ${font}, serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText(customText, width / 2, height - height * 0.08);
