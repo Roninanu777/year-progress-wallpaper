@@ -13,7 +13,7 @@ const dmSans = DM_Sans({
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
