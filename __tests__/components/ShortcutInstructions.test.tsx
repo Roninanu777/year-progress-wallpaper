@@ -16,13 +16,11 @@ describe('ShortcutInstructions', () => {
     vi.clearAllMocks();
   });
 
-  it('renders collapsed by default', () => {
+  it('renders the trigger', () => {
     render(<ShortcutInstructions apiUrl={testApiUrl} />);
 
     expect(screen.getByText('iOS Shortcut Setup')).toBeInTheDocument();
-    expect(
-      screen.getByText('Automate daily wallpaper updates')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Auto-update your wallpaper daily')).toBeInTheDocument();
   });
 
   it('expands when clicked', () => {

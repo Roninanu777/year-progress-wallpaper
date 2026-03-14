@@ -7,11 +7,13 @@ export default function SizeSection() {
   const { state, dispatch } = useWallpaper();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
         <div className="flex items-center justify-between mb-3">
-          <label className="text-sm font-medium text-muted-foreground">Circle Radius</label>
-          <span className="text-sm font-mono text-foreground">{state.radius}px</span>
+          <label className="text-[13px] font-medium text-muted-foreground">Radius</label>
+          <span className="text-[11px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+            {state.radius}px
+          </span>
         </div>
         <Slider
           value={[state.radius]}
@@ -27,8 +29,10 @@ export default function SizeSection() {
       </div>
       <div>
         <div className="flex items-center justify-between mb-3">
-          <label className="text-sm font-medium text-muted-foreground">Spacing</label>
-          <span className="text-sm font-mono text-foreground">{state.spacing}px</span>
+          <label className="text-[13px] font-medium text-muted-foreground">Spacing</label>
+          <span className="text-[11px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+            {state.spacing}px
+          </span>
         </div>
         <Slider
           value={[state.spacing]}

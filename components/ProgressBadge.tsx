@@ -27,14 +27,16 @@ export default function ProgressBadge() {
 
   return (
     <div className="text-right">
-      <div className="text-2xl sm:text-3xl font-bold text-foreground flex items-baseline justify-end gap-0.5">
-        <motion.span>{displayValue}</motion.span>
-        <span>%</span>
+      <div className="flex items-baseline justify-end gap-0.5">
+        <motion.span className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-foreground tabular-nums">
+          {displayValue}
+        </motion.span>
+        <span className="text-sm font-semibold text-primary">%</span>
       </div>
-      <div className="text-xs sm:text-sm text-muted-foreground">
+      <div className="text-[11px] text-muted-foreground mt-0.5">
         {state.mode === 'year'
-          ? `Day ${dayOfYear} · ${daysRemaining} remaining`
-          : `Day ${dayOfMonth} of ${monthName} · ${monthDaysRemaining} remaining`}
+          ? `Day ${dayOfYear} · ${daysRemaining} left`
+          : `${monthName} · Day ${dayOfMonth}`}
       </div>
     </div>
   );

@@ -17,36 +17,53 @@ export default function ThemeSection() {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-3 gap-2">
       {Object.entries(PRESET_THEMES).map(([key, theme]) => {
         const active = isActiveTheme(key as ThemeKey);
         return (
           <motion.button
             key={key}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => dispatch({ type: 'APPLY_THEME', payload: key as ThemeKey })}
-            className={`group flex flex-col items-center p-3 rounded-lg border transition-colors ${
+            className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group ${
               active
-                ? 'bg-primary/10 border-primary'
-                : 'bg-secondary/50 border-border hover:bg-secondary hover:border-muted-foreground'
+                ? 'bg-primary/10 ring-1 ring-primary'
+                : 'bg-muted/50 ring-1 ring-border hover:ring-border/80 hover:bg-muted'
             }`}
             aria-label={`Apply ${theme.name} theme`}
           >
-            <div className="flex gap-1 mb-2">
-              <div
-                className="w-4 h-4 rounded-full border border-border"
-                style={{ backgroundColor: theme.bgColor }}
-              />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: theme.filledColor }}
-              />
-              <div
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: theme.emptyColor }}
-              />
+            {/* Mini wallpaper preview */}
+            <div
+              className="w-full aspect-[9/16] rounded-lg overflow-hidden flex items-center justify-center"
+              style={{ backgroundColor: theme.bgColor }}
+            >
+              <div className="grid grid-cols-3 gap-[3px]">
+                {Array.from({ length: 15 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-[5px] h-[5px] rounded-full"
+                    style={{
+                      backgroundColor: i < 8 ? theme.filledColor : theme.emptyColor,
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-            <span className="text-xs text-muted-foreground">{theme.name}</span>
+
+            <span className={`text-[10px] font-medium transition-colors ${
+              active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+            }`}>
+              {theme.name}
+            </span>
+
+            {active && (
+              <motion.div
+                layoutId="activeTheme"
+                className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background"
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
+            )}
           </motion.button>
         );
       })}

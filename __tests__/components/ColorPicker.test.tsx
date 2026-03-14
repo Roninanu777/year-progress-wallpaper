@@ -11,41 +11,27 @@ describe('ColorPicker', () => {
 
   it('renders with label', () => {
     render(
-      <ColorPicker label="Background" color="#000000" onChange={mockOnChange} />
+      <ColorPicker label="BG" color="#000000" onChange={mockOnChange} />
     );
 
-    expect(screen.getByText('Background')).toBeInTheDocument();
+    expect(screen.getByText('BG')).toBeInTheDocument();
   });
 
-  it('displays color preview button with correct background', () => {
+  it('renders color dot button with correct background', () => {
     render(
-      <ColorPicker label="Background" color="#FF5733" onChange={mockOnChange} />
+      <ColorPicker label="BG" color="#FF5733" onChange={mockOnChange} />
     );
 
-    const colorButton = screen.getByRole('button', {
-      name: /select background/i,
-    });
+    const colorButton = screen.getByRole('button', { name: /change bg color/i });
     expect(colorButton).toHaveStyle({ backgroundColor: '#FF5733' });
   });
 
-  it('displays hex input field', () => {
+  it('renders the color dot trigger', () => {
     render(
-      <ColorPicker label="Test" color="#ABCDEF" onChange={mockOnChange} />
+      <ColorPicker label="Fill" color="#ABCDEF" onChange={mockOnChange} />
     );
 
-    const input = screen.getByRole('textbox');
-    expect(input).toBeInTheDocument();
-    expect(input).toHaveValue('ABCDEF');
-  });
-
-  it('calls onChange when hex input changes', () => {
-    render(
-      <ColorPicker label="Test" color="#000000" onChange={mockOnChange} />
-    );
-
-    const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'FF0000' } });
-
-    expect(mockOnChange).toHaveBeenCalled();
+    const button = screen.getByRole('button', { name: /change fill color/i });
+    expect(button).toBeInTheDocument();
   });
 });

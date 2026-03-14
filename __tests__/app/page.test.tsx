@@ -38,53 +38,54 @@ vi.mock('@/components/MobileControlsSheet', () => ({
   },
 }));
 
+vi.mock('@/components/ThemeToggle', () => ({
+  default: function MockThemeToggle() {
+    return <div data-testid="theme-toggle">Theme Toggle</div>;
+  },
+}));
+
+vi.mock('@/components/controls/ActionButtons', () => ({
+  default: function MockActionButtons() {
+    return <div data-testid="action-buttons">Action Buttons</div>;
+  },
+}));
+
 import Home from '@/app/page';
 
 describe('Home Page', () => {
-  it('renders the page header', () => {
+  it('renders the brand name', () => {
     render(<Home />);
-
-    expect(screen.getByText('Year Progress Wallpaper')).toBeInTheDocument();
+    expect(screen.getByText('Live Calendar')).toBeInTheDocument();
   });
 
   it('renders the Preview component', () => {
     render(<Home />);
-
     expect(screen.getByTestId('preview')).toBeInTheDocument();
   });
 
   it('renders the Controls component', () => {
     render(<Home />);
-
     expect(screen.getByTestId('controls')).toBeInTheDocument();
   });
 
   it('renders the ShortcutInstructions component', () => {
     render(<Home />);
-
     expect(screen.getByTestId('shortcut-instructions')).toBeInTheDocument();
   });
 
-  it('renders section headers', () => {
+  it('renders the sidebar header', () => {
     render(<Home />);
-
-    expect(screen.getByText('Live Preview')).toBeInTheDocument();
-    expect(screen.getByText('Customize Your Wallpaper')).toBeInTheDocument();
+    expect(screen.getByText('Customize')).toBeInTheDocument();
+    expect(screen.getByText('Configure your wallpaper')).toBeInTheDocument();
   });
 
-  it('renders the footer', () => {
+  it('renders the mode toggle', () => {
     render(<Home />);
-
-    expect(
-      screen.getByText(/Generate beautiful year-progress wallpapers/)
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('mode-toggle')).toBeInTheDocument();
   });
 
-  it('shows description text in header', () => {
+  it('renders the theme toggle', () => {
     render(<Home />);
-
-    expect(
-      screen.getByText('Visualize your year with a customizable circle grid')
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('theme-toggle')).toBeInTheDocument();
   });
 });

@@ -12,14 +12,14 @@ function renderWithProvider() {
 }
 
 describe('Controls', () => {
-  it('renders accordion sections', () => {
+  it('renders control sections', () => {
     renderWithProvider();
 
-    expect(screen.getByText('Device & Style')).toBeInTheDocument();
-    expect(screen.getByText('Theme Presets')).toBeInTheDocument();
+    expect(screen.getByText('Theme')).toBeInTheDocument();
+    expect(screen.getAllByText('Device').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Colors')).toBeInTheDocument();
-    expect(screen.getByText('Size & Spacing')).toBeInTheDocument();
-    expect(screen.getByText('Text & Font')).toBeInTheDocument();
+    expect(screen.getByText('Layout')).toBeInTheDocument();
+    expect(screen.getByText('Typography')).toBeInTheDocument();
   });
 
   it('renders theme presets', () => {
@@ -30,29 +30,29 @@ describe('Controls', () => {
     expect(screen.getByText('Ocean')).toBeInTheDocument();
   });
 
-  it('renders color pickers', () => {
+  it('renders color picker dots', () => {
     renderWithProvider();
 
-    expect(screen.getByText('Background')).toBeInTheDocument();
-    expect(screen.getByText('Filled Circles (Days Passed)')).toBeInTheDocument();
-    expect(screen.getByText('Empty Circles (Days Remaining)')).toBeInTheDocument();
-    expect(screen.getByText('Text Color')).toBeInTheDocument();
-    expect(screen.getByText('Accent Color (Days Left)')).toBeInTheDocument();
+    expect(screen.getByText('BG')).toBeInTheDocument();
+    expect(screen.getByText('Fill')).toBeInTheDocument();
+    expect(screen.getByText('Empty')).toBeInTheDocument();
+    expect(screen.getByText('Text')).toBeInTheDocument();
+    expect(screen.getByText('Accent')).toBeInTheDocument();
   });
 
   it('renders size controls with values', () => {
     renderWithProvider();
 
-    expect(screen.getByText('Circle Radius')).toBeInTheDocument();
-    expect(screen.getByText('12px')).toBeInTheDocument(); // default radius
+    expect(screen.getByText('Radius')).toBeInTheDocument();
+    expect(screen.getByText('12px')).toBeInTheDocument();
     expect(screen.getByText('Spacing')).toBeInTheDocument();
-    expect(screen.getByText('6px')).toBeInTheDocument(); // default spacing
+    expect(screen.getByText('6px')).toBeInTheDocument();
   });
 
   it('renders custom text toggle', () => {
     renderWithProvider();
 
-    expect(screen.getByText('Add custom text')).toBeInTheDocument();
+    expect(screen.getByText('Custom text')).toBeInTheDocument();
   });
 
   it('renders font selection', () => {
@@ -61,30 +61,12 @@ describe('Controls', () => {
     expect(screen.getByText('Font')).toBeInTheDocument();
   });
 
-  it('renders action buttons', () => {
-    renderWithProvider();
-
-    expect(
-      screen.getByRole('button', { name: /download wallpaper/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /copy api url/i })
-    ).toBeInTheDocument();
-  });
-
   it('applies theme when theme button is clicked', () => {
     renderWithProvider();
 
     const neonButton = screen.getByLabelText('Apply Neon theme');
     fireEvent.click(neonButton);
 
-    // After clicking Neon theme, the Neon theme should be visually active
-    // We can verify the button has the active styles by checking it exists
     expect(neonButton).toBeInTheDocument();
-  });
-
-  it('always shows text color picker', () => {
-    renderWithProvider();
-    expect(screen.getByText('Text Color')).toBeInTheDocument();
   });
 });

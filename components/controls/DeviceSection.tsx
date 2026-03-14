@@ -10,7 +10,7 @@ export default function DeviceSection() {
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-muted-foreground mb-2">Device</label>
+        <label className="block text-[13px] font-medium text-muted-foreground mb-2">Device</label>
         <Select
           value={state.device}
           onValueChange={(value) => dispatch({ type: 'SET_DEVICE', payload: value as DevicePresetKey })}
@@ -30,7 +30,7 @@ export default function DeviceSection() {
 
       {state.mode === 'month' && (
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">Calendar Style</label>
+          <label className="block text-[13px] font-medium text-muted-foreground mb-2">Calendar Style</label>
           <Select
             value={state.monthStyle}
             onValueChange={(value) => dispatch({ type: 'SET_MONTH_STYLE', payload: value as MonthStyleKey })}

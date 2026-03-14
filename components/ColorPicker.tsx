@@ -11,29 +11,27 @@ interface ColorPickerProps {
 
 export default function ColorPicker({ label, color, onChange }: ColorPickerProps) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-muted-foreground mb-2">{label}</label>
-      <div className="flex items-center gap-3">
-        <Popover>
-          <PopoverTrigger
-            className="w-10 h-10 rounded-lg border-2 border-border cursor-pointer transition-transform hover:scale-105 hover:border-muted-foreground"
-            style={{ backgroundColor: color }}
-            aria-label={`Select ${label.toLowerCase()}`}
-          />
-          <PopoverContent className="w-auto p-3" align="start">
-            <HexColorPicker color={color} onChange={onChange} />
-          </PopoverContent>
-        </Popover>
-        <div className="flex items-center bg-secondary rounded-lg px-3 py-2">
-          <span className="text-muted-foreground mr-1">#</span>
-          <HexColorInput
-            color={color}
-            onChange={onChange}
-            className="w-20 bg-transparent text-foreground uppercase font-mono text-sm focus:outline-none"
-            prefixed={false}
-          />
-        </div>
-      </div>
+    <div className="flex flex-col items-center gap-1.5">
+      <Popover>
+        <PopoverTrigger
+          className="w-8 h-8 rounded-xl border border-border cursor-pointer transition-all duration-200 hover:scale-110 hover:border-muted-foreground hover:shadow-md"
+          style={{ backgroundColor: color }}
+          aria-label={`Change ${label} color`}
+        />
+        <PopoverContent className="w-auto p-3" align="center" sideOffset={8}>
+          <HexColorPicker color={color} onChange={onChange} />
+          <div className="flex items-center gap-2 mt-3 bg-muted rounded-lg px-3 py-1.5">
+            <span className="text-muted-foreground text-xs">#</span>
+            <HexColorInput
+              color={color}
+              onChange={onChange}
+              className="w-full bg-transparent text-foreground uppercase font-mono text-xs focus:outline-none"
+              prefixed={false}
+            />
+          </div>
+        </PopoverContent>
+      </Popover>
+      <span className="text-[10px] font-medium text-muted-foreground">{label}</span>
     </div>
   );
 }

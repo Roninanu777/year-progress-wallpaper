@@ -5,6 +5,7 @@ import { DEVICE_PRESETS } from '@/lib/constants';
 import { generateApiUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { Download, Link } from 'lucide-react';
 
 export default function ActionButtons() {
   const { state, apiUrl } = useWallpaper();
@@ -52,21 +53,23 @@ export default function ActionButtons() {
   };
 
   return (
-    <div className="space-y-3 pt-2">
+    <div className="space-y-2.5">
       <Button
         onClick={handleDownload}
-        className="w-full"
+        className="w-full h-11 rounded-xl text-[13px] font-semibold shadow-[0_0_20px_oklch(0.696_0.17_162.48/15%)] hover:shadow-[0_0_30px_oklch(0.696_0.17_162.48/25%)] active:scale-[0.98] transition-all duration-200"
         size="lg"
       >
+        <Download className="w-4 h-4 mr-2" />
         Download Wallpaper
       </Button>
       <Button
         onClick={handleCopyUrl}
-        variant="secondary"
-        className="w-full"
+        variant="outline"
+        className="w-full h-10 rounded-xl text-[13px] font-medium transition-all duration-200"
         size="lg"
       >
-        Copy API URL for iOS Shortcut
+        <Link className="w-4 h-4 mr-2" />
+        Copy Shortcut URL
       </Button>
     </div>
   );

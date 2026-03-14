@@ -13,7 +13,7 @@ export default function TextSection() {
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-muted-foreground mb-2">Font</label>
+        <label className="block text-[13px] font-medium text-muted-foreground mb-2">Font</label>
         <Select
           value={state.font}
           onValueChange={(value) => dispatch({ type: 'SET_FONT', payload: value as FontKey })}
@@ -32,8 +32,8 @@ export default function TextSection() {
       </div>
 
       <div className="flex items-center justify-between">
-        <label htmlFor="custom-text-toggle" className="text-sm font-medium text-muted-foreground cursor-pointer">
-          Add custom text
+        <label htmlFor="custom-text-toggle" className="text-[13px] font-medium text-muted-foreground cursor-pointer">
+          Custom text
         </label>
         <Switch
           id="custom-text-toggle"
@@ -55,7 +55,8 @@ export default function TextSection() {
               type="text"
               value={state.customText}
               onChange={(e) => dispatch({ type: 'SET_CUSTOM_TEXT', payload: e.target.value })}
-              placeholder="Enter text to display below the grid"
+              placeholder="Text below the grid"
+              className="text-[13px]"
             />
           </motion.div>
         )}
