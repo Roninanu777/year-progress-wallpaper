@@ -28,14 +28,14 @@ export default function ThemeSection() {
             onClick={() => dispatch({ type: 'APPLY_THEME', payload: key as ThemeKey })}
             className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group ${
               active
-                ? 'bg-primary/10 ring-1 ring-primary'
-                : 'bg-muted/50 ring-1 ring-border hover:ring-border/80 hover:bg-muted'
+                ? 'bg-primary/10 ring-1 ring-primary shadow-sm'
+                : 'bg-muted/80 dark:bg-muted/50 ring-1 ring-black/[0.08] dark:ring-white/[0.06] hover:ring-black/[0.15] dark:hover:ring-white/[0.1] hover:bg-muted shadow-sm dark:shadow-none'
             }`}
             aria-label={`Apply ${theme.name} theme`}
           >
             {/* Mini wallpaper preview */}
             <div
-              className="w-full aspect-[9/16] rounded-lg overflow-hidden flex items-center justify-center"
+              className="w-full aspect-[9/16] rounded-lg overflow-hidden flex items-center justify-center ring-1 ring-black/[0.06] dark:ring-white/[0.04]"
               style={{ backgroundColor: theme.bgColor }}
             >
               <div className="grid grid-cols-3 gap-[3px]">

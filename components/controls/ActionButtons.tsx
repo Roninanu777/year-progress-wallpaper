@@ -56,7 +56,7 @@ export default function ActionButtons() {
     <div className="space-y-2.5">
       <Button
         onClick={handleDownload}
-        className="w-full h-11 rounded-xl text-[13px] font-semibold shadow-[0_0_20px_oklch(0.696_0.17_162.48/15%)] hover:shadow-[0_0_30px_oklch(0.696_0.17_162.48/25%)] active:scale-[0.98] transition-all duration-200"
+        className="w-full h-11 rounded-xl text-[13px] font-semibold shadow-[0_4px_20px_oklch(0.696_0.17_162.48/30%),0_1px_3px_oklch(0_0_0/0.1)] hover:shadow-[0_4px_30px_oklch(0.696_0.17_162.48/45%),0_2px_6px_oklch(0_0_0/0.12)] dark:shadow-[0_0_20px_oklch(0.696_0.17_162.48/20%)] dark:hover:shadow-[0_0_30px_oklch(0.696_0.17_162.48/30%)] active:scale-[0.98] transition-all duration-200"
         size="lg"
       >
         <Download className="w-4 h-4 mr-2" />
@@ -65,7 +65,7 @@ export default function ActionButtons() {
       <Button
         onClick={handleCopyUrl}
         variant="outline"
-        className="w-full h-10 rounded-xl text-[13px] font-medium transition-all duration-200"
+        className="w-full h-10 rounded-xl text-[13px] font-medium border-border/80 dark:border-border hover:bg-muted hover:border-primary/30 hover:text-primary transition-all duration-200"
         size="lg"
       >
         <Link className="w-4 h-4 mr-2" />

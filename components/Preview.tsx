@@ -22,11 +22,12 @@ export default function Preview() {
       <div className="relative group">
         {/* Ambient glow behind device */}
         <div
-          className="absolute inset-0 -inset-x-12 -inset-y-8 rounded-[60px] blur-[80px] opacity-[0.12] transition-opacity duration-700 group-hover:opacity-[0.18]"
+          className="absolute -inset-x-16 -inset-y-12 rounded-[60px] blur-[80px] opacity-[0.25] dark:opacity-[0.15] transition-opacity duration-700 group-hover:opacity-[0.35] dark:group-hover:opacity-[0.22]"
           style={{ backgroundColor: state.filledColor }}
         />
 
         <motion.div
+          className="drop-shadow-[0_8px_40px_oklch(0_0_0/0.08)] dark:drop-shadow-none"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}

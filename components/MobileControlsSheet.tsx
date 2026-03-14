@@ -33,7 +33,7 @@ export default function MobileControlsSheet() {
         </SheetTrigger>
       </motion.div>
 
-      <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto bg-card/95 backdrop-blur-xl rounded-t-2xl">
+      <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto bg-white/95 dark:bg-card/95 backdrop-blur-xl rounded-t-2xl shadow-[0_-4px_40px_oklch(0_0_0/0.08)] dark:shadow-[0_-4px_40px_oklch(0_0_0/0.3)]">
         <div className="w-10 h-1 bg-muted-foreground/30 rounded-full mx-auto mt-2 mb-4" />
         <SheetHeader className="px-4">
           <SheetTitle className="text-[15px] font-display font-semibold">Customize</SheetTitle>

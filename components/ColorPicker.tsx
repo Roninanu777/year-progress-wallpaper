@@ -14,7 +14,7 @@ export default function ColorPicker({ label, color, onChange }: ColorPickerProps
     <div className="flex flex-col items-center gap-1.5">
       <Popover>
         <PopoverTrigger
-          className="w-8 h-8 rounded-xl border border-border cursor-pointer transition-all duration-200 hover:scale-110 hover:border-muted-foreground hover:shadow-md"
+          className="w-8 h-8 rounded-xl border-2 border-black/10 dark:border-white/15 ring-1 ring-black/[0.04] dark:ring-white/[0.06] cursor-pointer transition-all duration-200 hover:scale-110 hover:border-black/25 dark:hover:border-white/30 hover:shadow-md"
           style={{ backgroundColor: color }}
           aria-label={`Change ${label} color`}
         />
