@@ -121,7 +121,7 @@
 
 /* ─── Base ─── */
 body {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Noise texture — multiply for light, overlay for dark */
@@ -243,6 +243,7 @@ body::before {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   }
   html {
     @apply font-sans;
