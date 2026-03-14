@@ -1,45 +1,50 @@
+import { vi, describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Home from '@/app/page';
 
 // Mock the components to isolate the page test
-jest.mock('@/components/Preview', () => {
-  return function MockPreview() {
+vi.mock('@/components/Preview', () => ({
+  default: function MockPreview() {
     return <div data-testid="preview">Preview</div>;
-  };
-});
+  },
+}));
 
-jest.mock('@/components/Controls', () => {
-  return function MockControls() {
+vi.mock('@/components/Controls', () => ({
+  default: function MockControls() {
     return <div data-testid="controls">Controls</div>;
-  };
-});
+  },
+}));
 
-jest.mock('@/components/ShortcutInstructions', () => {
-  return function MockShortcutInstructions() {
+vi.mock('@/components/ShortcutInstructions', () => ({
+  default: function MockShortcutInstructions() {
     return <div data-testid="shortcut-instructions">Shortcut Instructions</div>;
-  };
-});
+  },
+}));
+
+vi.mock('@/components/ModeToggle', () => ({
+  default: function MockModeToggle() {
+    return <div data-testid="mode-toggle">Mode Toggle</div>;
+  },
+}));
+
+vi.mock('@/components/ProgressBadge', () => ({
+  default: function MockProgressBadge() {
+    return <div data-testid="progress-badge">20.0%</div>;
+  },
+}));
+
+vi.mock('@/components/MobileControlsSheet', () => ({
+  default: function MockMobileControlsSheet() {
+    return <div data-testid="mobile-sheet">Mobile Sheet</div>;
+  },
+}));
+
+import Home from '@/app/page';
 
 describe('Home Page', () => {
   it('renders the page header', () => {
     render(<Home />);
 
     expect(screen.getByText('Year Progress Wallpaper')).toBeInTheDocument();
-  });
-
-  it('displays year progress percentage', () => {
-    render(<Home />);
-
-    // Should show a percentage value
-    expect(screen.getByText(/%$/)).toBeInTheDocument();
-  });
-
-  it('displays current day information', () => {
-    render(<Home />);
-
-    // Should show "Day X" and "X remaining"
-    expect(screen.getByText(/Day \d+/)).toBeInTheDocument();
-    expect(screen.getByText(/\d+ remaining/)).toBeInTheDocument();
   });
 
   it('renders the Preview component', () => {

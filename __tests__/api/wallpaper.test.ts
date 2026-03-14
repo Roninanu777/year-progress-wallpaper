@@ -1,14 +1,13 @@
 /**
- * @jest-environment node
+ * @vitest-environment node
  */
 
-import { GET } from '@/app/api/wallpaper/route';
+import { vi, describe, it, expect } from 'vitest';
 import { NextRequest } from 'next/server';
-import { ImageResponse } from 'next/og';
 
 // Mock ImageResponse
-jest.mock('next/og', () => ({
-  ImageResponse: jest.fn().mockImplementation((element, options) => {
+vi.mock('next/og', () => ({
+  ImageResponse: vi.fn().mockImplementation((element, options) => {
     return {
       status: 200,
       headers: new Headers({ 'content-type': 'image/png' }),
@@ -19,8 +18,11 @@ jest.mock('next/og', () => ({
   }),
 }));
 
+import { GET } from '@/app/api/wallpaper/route';
+import { ImageResponse } from 'next/og';
+
 describe('GET /api/wallpaper', () => {
-  const mockedImageResponse = ImageResponse as jest.Mock;
+  const mockedImageResponse = ImageResponse as ReturnType<typeof vi.fn>;
 
   function createRequest(params: Record<string, string> = {}): NextRequest {
     const url = new URL('http://localhost:3000/api/wallpaper');
@@ -119,17 +121,11 @@ describe('GET /api/wallpaper', () => {
 
     expect(mockedImageResponse).toHaveBeenCalled();
     const [element] = mockedImageResponse.mock.calls[0];
-
-    // The element should contain multiple circle divs
-    // We can't easily count them due to mocking, but verify structure exists
     expect(element).toBeDefined();
   });
 });
 
 describe('API helper functions', () => {
-  // Test the helper functions defined in the route file
-  // These are duplicated in the route for Edge runtime compatibility
-
   function isLeapYear(year: number): boolean {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }

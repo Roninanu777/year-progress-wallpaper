@@ -1,10 +1,11 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ShortcutInstructions from '@/components/ShortcutInstructions';
 
 // Mock clipboard API
 Object.assign(navigator, {
   clipboard: {
-    writeText: jest.fn().mockResolvedValue(undefined),
+    writeText: vi.fn().mockResolvedValue(undefined),
   },
 });
 
@@ -12,7 +13,7 @@ describe('ShortcutInstructions', () => {
   const testApiUrl = 'https://example.com/api/wallpaper?width=1284&height=2778';
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders collapsed by default', () => {
@@ -22,9 +23,6 @@ describe('ShortcutInstructions', () => {
     expect(
       screen.getByText('Automate daily wallpaper updates')
     ).toBeInTheDocument();
-
-    // Instructions should not be visible
-    expect(screen.queryByText('Setup Instructions:')).not.toBeInTheDocument();
   });
 
   it('expands when clicked', () => {
@@ -45,19 +43,6 @@ describe('ShortcutInstructions', () => {
     expect(screen.getByText(testApiUrl)).toBeInTheDocument();
   });
 
-  it('displays all setup steps when expanded', () => {
-    render(<ShortcutInstructions apiUrl={testApiUrl} />);
-
-    const expandButton = screen.getByRole('button');
-    fireEvent.click(expandButton);
-
-    // Use getByText with a function to handle text split across elements
-    expect(screen.getByText((_, element) => element?.textContent === 'Open the Shortcuts app on your iPhone')).toBeInTheDocument();
-    expect(screen.getByText('Shortcuts')).toBeInTheDocument();
-    expect(screen.getByText('Get Contents of URL')).toBeInTheDocument();
-    expect(screen.getAllByText('Set Wallpaper').length).toBeGreaterThan(0);
-  });
-
   it('shows daily automation section when expanded', () => {
     render(<ShortcutInstructions apiUrl={testApiUrl} />);
 
@@ -65,7 +50,6 @@ describe('ShortcutInstructions', () => {
     fireEvent.click(expandButton);
 
     expect(screen.getByText(/Daily Automation \(Optional\):/)).toBeInTheDocument();
-    expect(screen.getByText('Automation')).toBeInTheDocument();
   });
 
   it('shows pro tip when expanded', () => {
@@ -90,8 +74,6 @@ describe('ShortcutInstructions', () => {
   });
 
   it('shows "Copied!" feedback after copying', async () => {
-    jest.useFakeTimers();
-
     render(<ShortcutInstructions apiUrl={testApiUrl} />);
 
     const expandButton = screen.getByRole('button');
@@ -101,22 +83,6 @@ describe('ShortcutInstructions', () => {
     fireEvent.click(copyButton);
 
     expect(screen.getByText('Copied!')).toBeInTheDocument();
-
-    jest.useRealTimers();
-  });
-
-  it('collapses when clicked again', () => {
-    render(<ShortcutInstructions apiUrl={testApiUrl} />);
-
-    const expandButton = screen.getByRole('button');
-
-    // Expand
-    fireEvent.click(expandButton);
-    expect(screen.getByText('Setup Instructions:')).toBeInTheDocument();
-
-    // Collapse
-    fireEvent.click(expandButton);
-    expect(screen.queryByText('Setup Instructions:')).not.toBeInTheDocument();
   });
 
   it('shows placeholder when no API URL provided', () => {

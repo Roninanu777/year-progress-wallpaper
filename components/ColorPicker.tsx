@@ -1,7 +1,7 @@
 'use client';
 
 import { HexColorPicker, HexColorInput } from 'react-colorful';
-import { useState, useRef, useEffect } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface ColorPickerProps {
   label: string;
@@ -10,47 +10,30 @@ interface ColorPickerProps {
 }
 
 export default function ColorPicker({ label, color, onChange }: ColorPickerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   return (
-    <div className="relative" ref={popoverRef}>
-      <label className="block text-sm font-medium text-zinc-300 mb-2">{label}</label>
+    <div>
+      <label className="block text-sm font-medium text-muted-foreground mb-2">{label}</label>
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-10 h-10 rounded-xl border-2 border-zinc-600 cursor-pointer transition-transform hover:scale-105 hover:border-zinc-500"
-          style={{ backgroundColor: color }}
-          aria-label={`Select ${label.toLowerCase()}`}
-        />
-        <div className="flex items-center bg-zinc-800 rounded-xl px-3 py-2">
-          <span className="text-zinc-500 mr-1">#</span>
+        <Popover>
+          <PopoverTrigger
+            className="w-10 h-10 rounded-lg border-2 border-border cursor-pointer transition-transform hover:scale-105 hover:border-muted-foreground"
+            style={{ backgroundColor: color }}
+            aria-label={`Select ${label.toLowerCase()}`}
+          />
+          <PopoverContent className="w-auto p-3" align="start">
+            <HexColorPicker color={color} onChange={onChange} />
+          </PopoverContent>
+        </Popover>
+        <div className="flex items-center bg-secondary rounded-lg px-3 py-2">
+          <span className="text-muted-foreground mr-1">#</span>
           <HexColorInput
             color={color}
             onChange={onChange}
-            className="w-20 bg-transparent text-white uppercase font-mono text-sm focus:outline-none"
+            className="w-20 bg-transparent text-foreground uppercase font-mono text-sm focus:outline-none"
             prefixed={false}
           />
         </div>
       </div>
-
-      {isOpen && (
-        <div className="absolute z-50 mt-2 p-3 bg-zinc-800 rounded-xl shadow-2xl border border-zinc-700">
-          <HexColorPicker color={color} onChange={onChange} />
-        </div>
-      )}
     </div>
   );
 }

@@ -1,4 +1,8 @@
-import '@testing-library/jest-dom';
+import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
+
+// Alias jest globals to vitest equivalents so existing tests work without modification
+globalThis.jest = vi;
 
 if (typeof HTMLCanvasElement !== 'undefined') {
   const noop = () => undefined;

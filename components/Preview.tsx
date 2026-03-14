@@ -2,49 +2,19 @@
 
 import DeviceFrame from './DeviceFrame';
 import WallpaperCanvas from './WallpaperCanvas';
-import { DEVICE_PRESETS, DevicePresetKey, MonthStyleKey } from '@/lib/constants';
+import { useWallpaper } from '@/lib/wallpaper-context';
+import { DEVICE_PRESETS } from '@/lib/constants';
 
-interface PreviewProps {
-  device: DevicePresetKey;
-  bgColor: string;
-  filledColor: string;
-  emptyColor: string;
-  radius: number;
-  spacing: number;
-  textColor: string;
-  accentColor?: string;
-  showCustomText: boolean;
-  customText: string;
-  font: string;
-  mode?: 'year' | 'month';
-  monthStyle?: MonthStyleKey;
-}
-
-export default function Preview({
-  device,
-  bgColor,
-  filledColor,
-  emptyColor,
-  radius,
-  spacing,
-  textColor,
-  accentColor = '#FFA500',
-  showCustomText,
-  customText,
-  font,
-  mode = 'year',
-  monthStyle = 'glass',
-}: PreviewProps) {
-  const deviceConfig = DEVICE_PRESETS[device];
+export default function Preview() {
+  const { state } = useWallpaper();
+  const deviceConfig = DEVICE_PRESETS[state.device];
   const aspectRatio = deviceConfig.height / deviceConfig.width;
 
-  // Use smaller dimensions for preview to improve performance
   const previewWidth = 400;
   const previewHeight = Math.round(previewWidth * aspectRatio);
 
-  // Scale radius and spacing proportionally
-  const scaledRadius = Math.round(radius * (previewWidth / deviceConfig.width));
-  const scaledSpacing = Math.round(spacing * (previewWidth / deviceConfig.width));
+  const scaledRadius = Math.round(state.radius * (previewWidth / deviceConfig.width));
+  const scaledSpacing = Math.round(state.spacing * (previewWidth / deviceConfig.width));
 
   return (
     <div className="flex flex-col items-center">
@@ -52,23 +22,23 @@ export default function Preview({
         <WallpaperCanvas
           width={previewWidth}
           height={previewHeight}
-          bgColor={bgColor}
-          filledColor={filledColor}
-          emptyColor={emptyColor}
+          bgColor={state.bgColor}
+          filledColor={state.filledColor}
+          emptyColor={state.emptyColor}
           radius={scaledRadius}
           spacing={scaledSpacing}
-          textColor={textColor}
-          accentColor={accentColor}
-          showCustomText={showCustomText}
-          customText={customText}
-          font={font}
-          mode={mode}
-          monthStyle={monthStyle}
+          textColor={state.textColor}
+          accentColor={state.accentColor}
+          showCustomText={state.showCustomText}
+          customText={state.customText}
+          font={state.font}
+          mode={state.mode}
+          monthStyle={state.monthStyle}
         />
       </DeviceFrame>
 
-      <p className="mt-4 text-sm text-zinc-400">
-        {deviceConfig.name} ({deviceConfig.width} × {deviceConfig.height})
+      <p className="mt-4 text-sm text-muted-foreground">
+        {deviceConfig.name} ({deviceConfig.width} x {deviceConfig.height})
       </p>
     </div>
   );
